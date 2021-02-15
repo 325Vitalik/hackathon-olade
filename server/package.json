@@ -2,16 +2,37 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "hot-server": "nodemon index.js"
+    "build": "babel src --out-dir build",
+    "hot-server": "nodemon --exec babel-node src/index.js",
+    "rebuild": "npm run build && node build/index.js",
+    "lint": "eslint src --fix",
+    "precommit": "lint-staged"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.12.16",
+    "@babel/core": "^7.12.16",
+    "@babel/node": "^7.12.16",
+    "@babel/preset-env": "^7.12.16",
+    "eslint": "^7.20.0",
+    "eslint-config-prettier": "^7.2.0",
+    "nodemon": "^2.0.7",
+    "prettier": "2.2.1"
+  },
+  "lint-staged": {
+    "*.{js, jsx}": [
+      "node_modules/.bin/eslint --max-warnings=0",
+      "prettier --write",
+      "git add"
+    ]
   }
 }
