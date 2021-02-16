@@ -1,2 +1,0 @@
-// const getSelectedLanguage
-"use strict";

@@ -1,4 +1,4 @@
 export const randomService = {
-	getError: () => ':(',
-	getSuccess: () => ({ status: 'success' }),
+  getError: () => ":(",
+  getSuccess: () => ({ status: "success" }),
 };

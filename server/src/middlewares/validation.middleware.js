@@ -1,5 +1,5 @@
 export function validationMiddleware(req, res, next) {
-	if (req.body.name) {
-		throw new Error('');
-	}
+  if (req.body.name) {
+    throw new Error("");
+  }
 }
