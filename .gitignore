@@ -25,6 +25,7 @@ yarn-error.log*
 
 #cache
 client/.eslintcache
+.eslintcache
 
 #idea
 .idea
