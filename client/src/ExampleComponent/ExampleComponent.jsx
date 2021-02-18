@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { getAuthHeader } from "../Auth/firebaseService";
 import socket from "../socket";
+import { signOut } from '../Auth/authActions';
 
 class ExampleComponent extends PureComponent {
 	constructor(props) {
@@ -54,6 +55,7 @@ class ExampleComponent extends PureComponent {
 				</Form>
 				<Button onClick={this.onCheckAuth}>Check auth with token</Button>
 				<Button onClick={this.onCheckAuthSimple}>Check auth withot token</Button>
+				<Button onClick={this.props.signOut}>Sign out</Button>
 				<Item>
 					<Item.Content>
 						<Item.Header>{this.props.foundData}</Item.Header>
@@ -67,6 +69,7 @@ class ExampleComponent extends PureComponent {
 function mapDispatchToProps(dispatch) {
 	return bindActionCreators(
 		{
+			signOut,
 			searchAction,
 		},
 		dispatch

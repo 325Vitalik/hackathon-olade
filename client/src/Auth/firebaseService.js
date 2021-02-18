@@ -31,3 +31,7 @@ export const signInWithEmailAndPassword = async ({ email, password }) => {
 export const getIdToken = async () => await auth.currentUser?.getIdToken();
 
 export const getAuthHeader = () => "Bearer " + localStorage.getItem("@token");
+
+export const getCurrentUser = () => auth.currentUser;
+
+export const signOutCurrentUser = async () => await auth.signOut();

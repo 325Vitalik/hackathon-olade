@@ -1,5 +1,12 @@
 import { navigate } from "@reach/router";
-import { getIdToken, registerNewUser, signInWithEmailAndPassword, signInWithGoogle } from "./firebaseService";
+import {
+	getCurrentUser,
+	getIdToken,
+	registerNewUser,
+	signInWithEmailAndPassword,
+	signInWithGoogle,
+	signOutCurrentUser,
+} from "./firebaseService";
 
 export const SET_CURRENT_USER_DATA = "SET_CURRENT_USER_DATA";
 
@@ -70,6 +77,25 @@ export const signInUsingEmailAndPassword = ({ email, password }) => async (dispa
 			console.error(response);
 		}
 	});
+};
+
+export const initialInsertCurrentUser = () => (dispatch, getStore) => {
+	const firebaseUser = getCurrentUser();
+	const url = new URL(`http://localhost:5000/user/${firebaseUser?.uid}`);
+
+	fetch(url).then(async (response) => {
+		if (response.ok) {
+			const user = await response.json();
+			dispatch(setCurrentUser(user));
+		} else {
+			console.error(response);
+		}
+	});
+};
+
+export const signOut = () => async (dispatch, getStore) => {
+	await signOutCurrentUser();
+	dispatch(setCurrentUser(null));
 };
 
 const setCurrentUser = (user) => (dispatch, getStore) => {
