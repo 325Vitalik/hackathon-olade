@@ -3,14 +3,20 @@ import { Button, Form, Item, Segment } from 'semantic-ui-react'
 import { searchAction } from "./exampleActions";
 import { connect } from 'react-redux';
 import { bindActionCreators } from "redux";
+import socket from '../socket'
 import store from "../root/store";
 
 class ExampleComponent extends PureComponent{
     constructor(props){
         super(props);
         this.state={
-            searchValue:''
+            message:''
         }
+    }
+    componentDidMount(){
+        socket.on('message',({message})=>this.setState({
+            message
+        }))
     }
 
     onSearchChange=(e, {value})=>{
@@ -23,8 +29,8 @@ class ExampleComponent extends PureComponent{
         return (
             <Segment>
             <Form>
-                <Form.Input value={this.state.searchValue} onChange={this.onSearchChange} label='search' />
-                <Button onClick={()=>this.props.searchAction(this.state.searchValue)} type='submit'>Submit</Button>
+                <Form.Input value={this.state.message} onChange={this.onSearchChange} label='Received value' />
+                <Button onClick={() => socket.emit('button-clicked',{message: "clicked"})} type='submit'>Submit</Button>
             </Form>
             <Item>
                 <Item.Content>
