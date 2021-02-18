@@ -29,3 +29,6 @@ client/.eslintcache
 
 #idea
 .idea
+
+#secrets
+server/src/configs/firebase_auth_config.json

@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { Button, Form, Item, Segment } from 'semantic-ui-react'
+import { Button, Form, Item, Segment, Header } from 'semantic-ui-react'
 import { searchAction } from "./exampleActions";
 import { connect } from 'react-redux';
 import { bindActionCreators } from "redux";
@@ -22,6 +22,7 @@ class ExampleComponent extends PureComponent{
     render(){
         return (
             <Segment>
+            <Header as='h1'>{this.props.userDisaplyName}</Header>
             <Form>
                 <Form.Input value={this.state.searchValue} onChange={this.onSearchChange} label='search' />
                 <Button onClick={()=>this.props.searchAction(this.state.searchValue)} type='submit'>Submit</Button>
@@ -47,7 +48,8 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
 	return {
-		foundData: state.exampleReducer.foundData
+		foundData: state.exampleReducer.foundData,
+        userDisaplyName: state.auth.currentUser?.displayName,
 	};
 }
 
