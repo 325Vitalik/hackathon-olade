@@ -27,3 +27,7 @@ export const registerNewUser = async ({ email, password }) => {
 export const signInWithEmailAndPassword = async ({ email, password }) => {
 	return await auth.signInWithEmailAndPassword(email, password);
 };
+
+export const getIdToken = async () => await auth.currentUser?.getIdToken();
+
+export const getAuthHeader = () => "Bearer " + localStorage.getItem("@token");

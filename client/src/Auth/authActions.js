@@ -1,5 +1,5 @@
 import { navigate } from "@reach/router";
-import { registerNewUser, signInWithEmailAndPassword, signInWithGoogle } from "./firebaseService";
+import { getIdToken, registerNewUser, signInWithEmailAndPassword, signInWithGoogle } from "./firebaseService";
 
 export const SET_CURRENT_USER_DATA = "SET_CURRENT_USER_DATA";
 
@@ -10,11 +10,7 @@ export const signInUsingGoogle = () => async (dispatch, getStore) => {
 	fetch(url).then(async (response) => {
 		if (response.ok) {
 			const user = await response.json();
-			dispatch({
-				type: SET_CURRENT_USER_DATA,
-				user,
-			});
-			navigate('/');
+			dispatch(setCurrentUser(user));
 		} else if (response.status === 404) {
 			const addDocumentUrl = new URL(`http://localhost:5000/user`);
 			fetch(addDocumentUrl, {
@@ -26,11 +22,7 @@ export const signInUsingGoogle = () => async (dispatch, getStore) => {
 			}).then(async (postResponse) => {
 				if (postResponse.ok) {
 					const user = await postResponse.json();
-					dispatch({
-						type: SET_CURRENT_USER_DATA,
-						user,
-					});
-					navigate('/');
+					dispatch(setCurrentUser(user));
 				} else {
 					console.log(postResponse);
 				}
@@ -61,11 +53,7 @@ export const registerUser = ({ email, password, firstName, lastName }) => async 
 	}).then(async (response) => {
 		if (response.ok) {
 			const user = await response.json();
-			dispatch({
-				type: SET_CURRENT_USER_DATA,
-				user,
-			});
-			navigate('/');
+			dispatch(setCurrentUser(user));
 		}
 	});
 };
@@ -77,13 +65,19 @@ export const signInUsingEmailAndPassword = ({ email, password }) => async (dispa
 	fetch(url).then(async (response) => {
 		if (response.ok) {
 			const user = await response.json();
-			dispatch({
-				type: SET_CURRENT_USER_DATA,
-				user,
-			});
-			navigate('/');
+			dispatch(setCurrentUser(user));
 		} else {
 			console.error(response);
 		}
 	});
+};
+
+const setCurrentUser = (user) => (dispatch, getStore) => {
+	dispatch({
+		type: SET_CURRENT_USER_DATA,
+		user,
+	});
+
+	getIdToken().then((token) => localStorage.setItem("@token", token));
+	navigate("/");
 };

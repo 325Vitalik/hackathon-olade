@@ -1,14 +1,5 @@
 import { InvalidRequestError, NotFoundError } from "./errors";
-
-const admin = require("firebase-admin");
-
-const serviceAccount = require("../configs/firebase_auth_config.json");
-
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-});
-
-const firestore = admin.firestore();
+import { firestore } from "./firebase.service";
 
 export const userService = {
     generateUserDocument: async (user, additionalData = {}) => {
@@ -21,7 +12,7 @@ export const userService = {
 
         if (!snapshot.exists) {
             const { email, displayName, photoURL } = user;
-            
+
             await userRef.set({
                 displayName,
                 email,
