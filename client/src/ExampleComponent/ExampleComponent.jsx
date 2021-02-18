@@ -4,6 +4,7 @@ import { searchAction } from "./exampleActions";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { getAuthHeader } from "../Auth/firebaseService";
+import socket from "../socket";
 
 class ExampleComponent extends PureComponent {
 	constructor(props) {
@@ -11,6 +12,14 @@ class ExampleComponent extends PureComponent {
 		this.state = {
 			searchValue: "",
 		};
+	}
+
+	componentDidMount() {
+		socket.on("message", ({ message }) =>
+			this.setState({
+				message,
+			})
+		);
 	}
 
 	onSearchChange = (e, { value }) => {
@@ -39,7 +48,7 @@ class ExampleComponent extends PureComponent {
 				<Header as="h1">{this.props.userDisaplyName}</Header>
 				<Form>
 					<Form.Input value={this.state.searchValue} onChange={this.onSearchChange} label="search" />
-					<Button onClick={() => this.props.searchAction(this.state.searchValue)} type="submit">
+					<Button onClick={() => socket.emit("button-clicked", { message: "clicked" })} type="submit">
 						Submit
 					</Button>
 				</Form>
