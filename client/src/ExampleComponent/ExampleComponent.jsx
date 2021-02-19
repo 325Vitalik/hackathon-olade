@@ -6,6 +6,7 @@ import { bindActionCreators } from "redux";
 import { getAuthHeader } from "../Auth/firebaseService";
 import socket from "../socket";
 import { signOut } from '../Auth/authActions';
+import { config } from '../config';
 
 class ExampleComponent extends PureComponent {
 	constructor(props) {
@@ -30,7 +31,7 @@ class ExampleComponent extends PureComponent {
 	};
 
 	onCheckAuth = () => {
-		const url = new URL(`http://localhost:5000/unauth/need`);
+		const url = new URL(`${config.hostname}/unauth/need`);
 		fetch(url, {
 			headers: {
 				Authorization: getAuthHeader(),
@@ -39,7 +40,7 @@ class ExampleComponent extends PureComponent {
 	};
 
 	onCheckAuthSimple = () => {
-		const url = new URL(`http://localhost:5000/unauth/need`);
+		const url = new URL(`${config.hostname}/unauth/need`);
 		fetch(url);
 	};
 
@@ -54,7 +55,7 @@ class ExampleComponent extends PureComponent {
 					</Button>
 				</Form>
 				<Button onClick={this.onCheckAuth}>Check auth with token</Button>
-				<Button onClick={this.onCheckAuthSimple}>Check auth withot token</Button>
+				<Button onClick={this.onCheckAuthSimple}>Check auth without token</Button>
 				<Button onClick={this.props.signOut}>Sign out</Button>
 				<Item>
 					<Item.Content>

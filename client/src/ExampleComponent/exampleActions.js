@@ -1,9 +1,11 @@
+import { config } from '../config';
+
 export const SEARCH_ACTION= 'SEARCH_ACTION';
 export const SET_FOUND_DATA='SET_FOUND_DATA';
 
 export function searchAction(query){
     return (dispatch)=>{
-        const url=new URL('http://localhost:5000/api');
+        const url=new URL(`${config.hostname}/api`);
         const params={search:query};
         url.search=new URLSearchParams(params).toString();
 
