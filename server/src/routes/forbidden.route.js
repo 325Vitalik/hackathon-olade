@@ -9,4 +9,8 @@ router.get("/", (req, res, next) => {
   next(error);
 });
 
+router.get("/need", (req, res) => {
+  res.status(200).send('This message need auth')
+})
+
 export { router as forbiddenRoutes };

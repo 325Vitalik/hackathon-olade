@@ -1,53 +1,85 @@
 import React, { PureComponent } from "react";
-import { Button, Form, Item, Segment } from 'semantic-ui-react'
+import { Button, Form, Item, Segment, Header } from "semantic-ui-react";
 import { searchAction } from "./exampleActions";
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import store from "../root/store";
+import { getAuthHeader } from "../Auth/firebaseService";
+import socket from "../socket";
+import { signOut } from '../Auth/authActions';
 
-class ExampleComponent extends PureComponent{
-    constructor(props){
-        super(props);
-        this.state={
-            searchValue:''
-        }
-    }
+class ExampleComponent extends PureComponent {
+	constructor(props) {
+		super(props);
+		this.state = {
+			searchValue: "",
+		};
+	}
 
-    onSearchChange=(e, {value})=>{
-        this.setState({
-            searchValue:value
-        })
-    }
+	componentDidMount() {
+		socket.on("message", ({ message }) =>
+			this.setState({
+				message,
+			})
+		);
+	}
 
-    render(){
-        return (
-            <Segment>
-            <Form>
-                <Form.Input value={this.state.searchValue} onChange={this.onSearchChange} label='search' />
-                <Button onClick={()=>this.props.searchAction(this.state.searchValue)} type='submit'>Submit</Button>
-            </Form>
-            <Item>
-                <Item.Content>
-                    <Item.Header>{this.props.foundData}</Item.Header>
-                </Item.Content>
-            </Item>
-            </Segment>
-        )
-    }
+	onSearchChange = (e, { value }) => {
+		this.setState({
+			searchValue: value,
+		});
+	};
+
+	onCheckAuth = () => {
+		const url = new URL(`http://localhost:5000/unauth/need`);
+		fetch(url, {
+			headers: {
+				Authorization: getAuthHeader(),
+			},
+		});
+	};
+
+	onCheckAuthSimple = () => {
+		const url = new URL(`http://localhost:5000/unauth/need`);
+		fetch(url);
+	};
+
+	render() {
+		return (
+			<Segment>
+				<Header as="h1">{this.props.userDisaplyName}</Header>
+				<Form>
+					<Form.Input value={this.state.searchValue} onChange={this.onSearchChange} label="search" />
+					<Button onClick={() => socket.emit("button-clicked", { message: "clicked" })} type="submit">
+						Submit
+					</Button>
+				</Form>
+				<Button onClick={this.onCheckAuth}>Check auth with token</Button>
+				<Button onClick={this.onCheckAuthSimple}>Check auth withot token</Button>
+				<Button onClick={this.props.signOut}>Sign out</Button>
+				<Item>
+					<Item.Content>
+						<Item.Header>{this.props.foundData}</Item.Header>
+					</Item.Content>
+				</Item>
+			</Segment>
+		);
+	}
 }
 
 function mapDispatchToProps(dispatch) {
 	return bindActionCreators(
 		{
-			searchAction
+			signOut,
+			searchAction,
 		},
-		dispatch,
+		dispatch
 	);
 }
 
 function mapStateToProps(state) {
 	return {
-		foundData: state.exampleReducer.foundData
+		foundData: state.exampleReducer.foundData,
+		userDisaplyName: state.auth.currentUser?.displayName,
 	};
 }
 
