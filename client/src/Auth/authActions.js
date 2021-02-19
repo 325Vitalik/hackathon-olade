@@ -7,19 +7,20 @@ import {
 	signInWithGoogle,
 	signOutCurrentUser,
 } from "./firebaseService";
+import { config } from '../config';
 
 export const SET_CURRENT_USER_DATA = "SET_CURRENT_USER_DATA";
 
 export const signInUsingGoogle = () => async (dispatch, getStore) => {
 	const { user: firebaseUser } = await signInWithGoogle();
-	const url = new URL(`http://localhost:5000/user/${firebaseUser.uid}`);
+	const url = new URL(`${config.hostname}/user/${firebaseUser.uid}`);
 
 	fetch(url).then(async (response) => {
 		if (response.ok) {
 			const user = await response.json();
 			dispatch(setCurrentUser(user));
 		} else if (response.status === 404) {
-			const addDocumentUrl = new URL(`http://localhost:5000/user`);
+			const addDocumentUrl = new URL(`${config.hostname}/user`);
 			fetch(addDocumentUrl, {
 				method: "POST",
 				headers: {
@@ -42,7 +43,7 @@ export const signInUsingGoogle = () => async (dispatch, getStore) => {
 
 export const registerUser = ({ email, password, firstName, lastName }) => async (dispatch, getStore) => {
 	const { user } = await registerNewUser({ email, password });
-	const url = new URL(`http://localhost:5000/user`);
+	const url = new URL(`${config.hostname}/user`);
 
 	fetch(url, {
 		method: "POST",
@@ -67,7 +68,7 @@ export const registerUser = ({ email, password, firstName, lastName }) => async 
 
 export const signInUsingEmailAndPassword = ({ email, password }) => async (dispatch, getStore) => {
 	const { user: firebaseUser } = await signInWithEmailAndPassword({ email, password });
-	const url = new URL(`http://localhost:5000/user/${firebaseUser.uid}`);
+	const url = new URL(`${config.hostname}/user/${firebaseUser.uid}`);
 
 	fetch(url).then(async (response) => {
 		if (response.ok) {
@@ -81,7 +82,7 @@ export const signInUsingEmailAndPassword = ({ email, password }) => async (dispa
 
 export const initialInsertCurrentUser = () => (dispatch, getStore) => {
 	const firebaseUser = getCurrentUser();
-	const url = new URL(`http://localhost:5000/user/${firebaseUser?.uid}`);
+	const url = new URL(`${config.hostname}/user/${firebaseUser?.uid}`);
 
 	fetch(url).then(async (response) => {
 		if (response.ok) {

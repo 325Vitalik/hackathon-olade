@@ -1,3 +1,5 @@
 import io from 'socket.io-client';
-const sockets = io('http://localhost:5000');
+import { config } from './config';
+
+const sockets = io(`${config.hostname}/socket.io`);
 export default sockets;
