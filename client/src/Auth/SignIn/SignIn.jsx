@@ -1,8 +1,10 @@
 import React, { PureComponent } from "react";
-import { Button, Form, Input, Segment } from "semantic-ui-react";
+import { Button, Form, Grid, Header, Segment, Image, Message } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { signInUsingGoogle, signInUsingEmailAndPassword } from "../authActions";
+import { Link, navigate } from "@reach/router";
+import "./SignIn.sass";
 
 class SignInComponent extends PureComponent {
 	constructor(props) {
@@ -25,26 +27,49 @@ class SignInComponent extends PureComponent {
 
 	render() {
 		return (
-			<Segment>
-				<Form>
-					<Form.Field>
-						<label>Email</label>
-						<input value={this.state.email} onChange={this.handleInputChange("email")} />
-					</Form.Field>
-					<Form.Field>
-						<label>Password</label>
-						<input
-							type="password"
-							value={this.state.password}
-							onChange={this.handleInputChange("password")}
-						/>
-					</Form.Field>
-					<Button onClick={this.props.signInUsingGoogle}>Google</Button>
-					<Button type="submit" onClick={this.onSubmit}>
-						Увійти
-					</Button>
-				</Form>
-			</Segment>
+			<Grid textAlign="center" className="sign-in-box" verticalAlign="middle">
+				<Grid.Column style={{ maxWidth: 450 }}>
+					<Form size="large">
+						<Segment>
+							<Form.Input
+								value={this.state.email}
+								onChange={this.handleInputChange("email")}
+								fluid
+								icon="user"
+								iconPosition="left"
+								placeholder="E-mail"
+							/>
+							<Form.Input
+								value={this.state.password}
+								onChange={this.handleInputChange("password")}
+								fluid
+								icon="lock"
+								iconPosition="left"
+								placeholder="Пароль"
+								type="password"
+							/>
+							<Button
+								onClick={this.props.signInUsingGoogle}
+								className="btn"
+								color="google plus"
+								fluid
+								size="large"
+							>
+								Увійти з Google
+							</Button>
+							<Button onClick={this.onSubmit} className="btn" color="primary" fluid size="large">
+								Увійти
+							</Button>
+						</Segment>
+					</Form>
+					<Message>
+						Ще не маєте акунту?{" "}
+						<Link to={"/sign-up"} onClick={() => navigate("/sign-up")}>
+							Зареєструватись
+						</Link>
+					</Message>
+				</Grid.Column>
+			</Grid>
 		);
 	}
 }
