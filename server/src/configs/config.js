@@ -13,7 +13,7 @@ const serviseAccount = {
 	'client_x509_cert_url': 'https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-gx52q%40hackathon-olade.iam.gserviceaccount.com'
 };
 
-const PROD_MODE = true;
+const PROD_MODE = process.env.PROD_MODE;
 
 export const config = {
 	'port': 5000,
