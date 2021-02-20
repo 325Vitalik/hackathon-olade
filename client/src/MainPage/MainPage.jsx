@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import "./MainPage.sass";
 import { navigate } from "@reach/router";
+import { setRouteToRedirect } from "./mainPageActions";
 
 class MainPage extends PureComponent {
 	constructor(props) {
@@ -13,14 +14,36 @@ class MainPage extends PureComponent {
 		};
 	}
 
-	componentDidMount() {}
+	componentDidMount() {
+		const pathname = window.location.pathname;
+
+		if (pathname !== "/") {
+			navigate("/");
+		}
+	}
+
+	navigateToPrivatePage = (route) => () => {
+		const isLoggedIn = Boolean(this.props.currentUser);
+
+		if (isLoggedIn) {
+			navigate(route);
+		} else {
+			this.props.setRouteToRedirect(route);
+			navigate("/sign-in");
+		}
+	};
 
 	render() {
+		const isLoggedIn = Boolean(this.props.currentUser);
+
 		return (
 			<Grid className="container-wrapper main-page" columns={2} padded divided>
 				<Grid.Row className="container-column">
 					<Grid.Column className="container-column">
-						<div onClick={() => navigate("/sign-in")} className="background-container lost-container">
+						<div
+							onClick={this.navigateToPrivatePage("/found")}
+							className="background-container lost-container"
+						>
 							<div className="overlay">
 								<div className="flex-align-center text-box">
 									<h1 className="header">Знайти друга</h1>
@@ -33,7 +56,10 @@ class MainPage extends PureComponent {
 						</div>
 					</Grid.Column>
 					<Grid.Column className="container-column">
-						<div onClick={() => navigate("/sign-in")} className="background-container find-container">
+						<div
+							onClick={this.navigateToPrivatePage("/search")}
+							className="background-container find-container"
+						>
 							<div className="overlay">
 								<div className="flex-align-center text-box">
 									<h1 className="header">Знайшов друга</h1>
@@ -52,11 +78,18 @@ class MainPage extends PureComponent {
 }
 
 function mapDispatchToProps(dispatch) {
-	return bindActionCreators({}, dispatch);
+	return bindActionCreators(
+		{
+			setRouteToRedirect,
+		},
+		dispatch
+	);
 }
 
 function mapStateToProps(state) {
-	return {};
+	return {
+		currentUser: state.auth.currentUser,
+	};
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainPage);
