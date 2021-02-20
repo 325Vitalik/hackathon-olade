@@ -1,11 +1,14 @@
 import React from "react";
 import SignUp from "./Auth/SignUp/SignUp";
 import SignIn from "./Auth/SignIn/SignIn";
-import ExampleComponent from "./ExampleComponent/ExampleComponent";
+import Profile from "./Profile/index";
+import PetPage from "./PetPage/index";
 import { initialInsertCurrentUser } from "./Auth/authActions";
-import { Router } from "@reach/router";
+import { navigate, Router, useLocation } from "@reach/router";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import MainPage from "./MainPage/MainPage";
+import { HomePage } from "./MainPageComponent/HomePage";
 
 class RootAppComponent extends React.Component {
 	componentDidMount = () => {
@@ -13,11 +16,21 @@ class RootAppComponent extends React.Component {
 	};
 
 	render() {
+		const isLoggedIn = Boolean(this.props.currentUser);
+
 		return (
 			<Router>
+				{isLoggedIn ? (
+					<>
+						<Profile path="profile" />
+						<PetPage path="pet-profile/:id" />
+						<HomePage path="/search" />
+						<HomePage path="/found" />
+					</>
+				) : null}
 				<SignIn path="sign-in" />
 				<SignUp path="sign-up" />
-				<ExampleComponent path="/" />
+				<MainPage default path="/" />
 			</Router>
 		);
 	}
@@ -27,4 +40,10 @@ function mapDispatchToProps(dispatch) {
 	return bindActionCreators({ initialInsertCurrentUser }, dispatch);
 }
 
-export default connect(null, mapDispatchToProps)(RootAppComponent);
+function mapStateToProps(state) {
+	return {
+		currentUser: state.auth.currentUser,
+	};
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(RootAppComponent);

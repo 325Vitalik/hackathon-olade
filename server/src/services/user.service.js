@@ -1,41 +1,31 @@
 import { InvalidRequestError, NotFoundError } from './errors';
-import { firestore } from './firebase.service';
+import { petFinderDbService } from './petFinderDb.service';
 
 const getUserDocument = async (uid) => {
 	if (!uid) {
 		throw new InvalidRequestError('User uid not specified');
 	}
 
-	const userDocument = await firestore.doc(`users/${uid}`).get();
+	const userCollection = await petFinderDbService.getUserCollection();
+	const userDocument = await userCollection.findOne({ _id: uid });
 
-	if (!userDocument.exists) {
+	if (!userDocument) {
 		throw new NotFoundError(`User with uid (${uid}) not found`);
 	}
 
 	return {
 		uid,
-		...userDocument.data(),
+		...userDocument,
 	};
 };
 
-const generateUserDocument = async (user, additionalData = {}) => {
+const generateUserDocument = async (user) => {
 	if (!user) {
 		throw new InvalidRequestError('User should be an object');
 	}
 
-	const userRef = firestore.doc(`users/${user.uid}`);
-	const snapshot = await userRef.get();
-
-	if (!snapshot.exists) {
-		const { email, displayName, photoURL } = user;
-
-		await userRef.set({
-			displayName,
-			email,
-			photoURL,
-			...additionalData,
-		});
-	}
+	const userCollection = await petFinderDbService.getUserCollection();
+	await userCollection.insert({ ...user, _id: user.uid });
 
 	return getUserDocument(user.uid);
 };

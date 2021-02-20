@@ -5,6 +5,4 @@ firebase.initializeApp({
 	credential: firebase.credential.cert(config.serviceAccount),
 });
 
-const firestore = firebase.firestore();
-
-export { firestore, firebase };
+export { firebase };
