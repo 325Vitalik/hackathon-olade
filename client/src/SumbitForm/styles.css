@@ -1,0 +1,35 @@
+.submit-form-pets-main-info-wrapper,
+.submit-form-coordinates-wrapper{
+    display: flex;
+    justify-content: space-between;
+}
+
+.submit-form-upload-photo-wrapper{
+    display: flex;
+    align-self: center;
+    justify-content: center;
+    width: 50%;
+}
+
+.submit-form-pets-main-info{
+    width: 50%;
+}
+
+@media screen and (max-width:600px){
+    .submit-form-pets-main-info-wrapper{
+        display: block;
+    }
+}
+
+.submit-form-colour-prompt{
+    display: flex;
+}
+
+.submit-form-colour-prompt-block{
+    width: 20px;
+    margin-right: 5px;
+}
+
+.submit-form-additional-info-wrapper{
+    margin-bottom: 10px;
+}
