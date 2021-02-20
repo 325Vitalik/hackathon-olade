@@ -42,14 +42,21 @@ class SignUpComponent extends PureComponent {
 		};
 	}
 
-	handleInputChange = (propertyName) => (e) => {
-		const error = this.validate(propertyName);
+	componentDidUpdate = (prevProps, prevState) => {
+		const allProps = ["firstName", "lastName", "phone", "email", "password", "confirmPassword"];
 
+		allProps.forEach((prop) => {
+			if (prevState[prop].value !== this.state[prop].value) {
+				this.state[prop].validate();
+			}
+		});
+	};
+
+	handleInputChange = (propertyName) => (e) => {
 		this.setState({
 			[propertyName]: {
 				...this.state[propertyName],
 				value: e.target.value,
-				error,
 			},
 		});
 	};
@@ -103,7 +110,7 @@ class SignUpComponent extends PureComponent {
 	};
 
 	validatePassword = () => {
-		const re = /^(?=.*[a-z])(?=.*[0-9])(?=.{8,})/;
+		const re = /^(?=.*[a-z])(?=.*[0-9])(?=.{8})/;
 		const valid = re.test(this.state.password.value);
 		const error = valid ? null : { content: "Пароль має бути мінімум 8 символів і містити символи і цифри" };
 		this.setError("password", error);
