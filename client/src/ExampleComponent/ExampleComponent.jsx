@@ -12,7 +12,7 @@ class ExampleComponent extends PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
-			searchValue: "",
+			message: "",
 		};
 	}
 
@@ -26,7 +26,7 @@ class ExampleComponent extends PureComponent {
 
 	onSearchChange = (e, { value }) => {
 		this.setState({
-			searchValue: value,
+			message: value,
 		});
 	};
 
@@ -49,7 +49,7 @@ class ExampleComponent extends PureComponent {
 			<Segment>
 				<Header as="h1">{this.props.userDisaplyName}</Header>
 				<Form>
-					<Form.Input value={this.state.searchValue} onChange={this.onSearchChange} label="search" />
+					<Form.Input value={this.state.message} onChange={this.onSearchChange} label="search" />
 					<Button onClick={() => socket.emit("button-clicked", { message: "clicked" })} type="submit">
 						Submit
 					</Button>
