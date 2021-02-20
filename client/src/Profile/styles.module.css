@@ -1,0 +1,21 @@
+.profileInfoRow{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+.profileInfoText{
+    margin-left: 15px;
+    font-size: 20pt;
+}
+.myAnnouncements{
+    margin-left: 15px;
+    font-size: 20pt;
+}
+.buttonContainer{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+.button{
+    margin-left: 15px;
+}
