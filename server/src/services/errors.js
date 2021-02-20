@@ -1,15 +1,15 @@
 export class NotFoundError extends Error {
-    constructor(message) {
-        super(message);
+	constructor(message) {
+		super(message);
 
-        this.statusCode = 404;
-    }
+		this.statusCode = 404;
+	}
 }
 
 export class InvalidRequestError extends Error {
-    constructor(message) {
-        super(message);
+	constructor(message) {
+		super(message);
 
-        this.statusCode = 400;
-    }
+		this.statusCode = 400;
+	}
 }
