@@ -9,7 +9,7 @@ const getUserDocument = async (uid) => {
 	const userCollection = await petFinderDbService.getUserCollection();
 	const userDocument = await userCollection.findOne({ _id: uid });
 
-	if (!userDocument.exists) {
+	if (!userDocument) {
 		throw new NotFoundError(`User with uid (${uid}) not found`);
 	}
 
