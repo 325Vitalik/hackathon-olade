@@ -37,3 +37,4 @@ server/src/configs/firebase_auth_config.json
 server/build
 server/package-lock.json
 .vscode/settings.json
+server/.env
