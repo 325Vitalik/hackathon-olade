@@ -3,15 +3,15 @@ const { MongoClient } = require('mongodb');
 
 const mongoClient = new MongoClient(config.mongodbClientUri, { useUnifiedTopology: true });
 
-const petFinderDb = null;
+let petFinderDb = null;
 
 const getPetFinderDb = async () => {
 	if (mongoClient.isConnected() && petFinderDb !== null) {
 		return petFinderDb;
 	}
 
-	await mongoClient.connect();
-	petFinderDb = mongoClient.db('petFinderDb');
+	const client = await mongoClient.connect();
+	petFinderDb = client.db('petFinderDb');
 
 	return petFinderDb;
 };
