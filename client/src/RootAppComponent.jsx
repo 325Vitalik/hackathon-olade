@@ -9,6 +9,7 @@ import { Router } from "@reach/router";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import MainPage from "./MainPage/MainPage";
+import {HomePage} from './MainPageComponent/HomePage';
 
 class RootAppComponent extends React.Component {
 	componentDidMount = () => {
@@ -23,6 +24,9 @@ class RootAppComponent extends React.Component {
 				<MainPage path="/" />
 				<Profile path="profile" />
 				<PetPage path="pet-profile/:id" />
+				<ExampleComponent path="/" />
+				<HomePage path="/search" />
+				<HomePage path="/found" />
 			</Router>
 		);
 	}

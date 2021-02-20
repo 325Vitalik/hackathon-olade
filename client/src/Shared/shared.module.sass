@@ -1,0 +1,45 @@
+.menuStyle
+    border-radius: 0
+    margin-bottom: 1em
+    margin-top: 4em
+    transition: box-shadow 0.5s ease, padding 0.5s ease
+    background-color: #fff
+    border: 1px solid #ddd
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2)
+
+.mainLogo
+    margin-right: 10px
+    width: 60px
+    height: auto
+
+.headerItem
+    padding-top: 5px !important
+    padding-bottom: 5px !important
+    &.first
+        padding-left: 0 !important
+        &:hover
+            background-color: #fff !important
+
+    &.active
+        border-bottom: 2px solid red
+
+.headerListItem
+    border-top: 1px solid #e0e0e0 !important
+
+.animalCard
+    margin: .5em !important
+
+.mainListWrapper
+    display: flex
+    width: 100%
+    flex: 3
+    flex-wrap: wrap
+    justify-content: center
+
+@media only screen and (max-width: 1200px)
+    .mainListWrapper
+        flex: auto
+
+@media only screen and (min-width: 1200px)
+    .headerContainer
+        width: 1230px !important
