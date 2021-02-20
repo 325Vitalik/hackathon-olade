@@ -1,9 +1,7 @@
-import * as path from 'path';
-
-const fs = require('fs');
+require('dotenv').config();
 const PROD_MODE = process.env.PROD_MODE || false;
 
-const serviseAccount = {
+const serviceAccount = {
 	type: 'service_account',
 	project_id: 'hackathon-olade',
 	private_key_id: process.env.FIREBASE_ID,
@@ -17,12 +15,9 @@ const serviseAccount = {
 		'https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-gx52q%40hackathon-olade.iam.gserviceaccount.com',
 };
 
-const devServiceAccount = PROD_MODE
-	? null
-	: JSON.parse(fs.readFileSync(path.resolve(__dirname, 'firebase_auth_config.json')));
-
 export const config = {
 	port: 5000,
-	serviceAccount: PROD_MODE ? serviseAccount : devServiceAccount,
+	serviceAccount,
+	mongodbClientUri: process.env.MONGO_URI,
 	hostname: PROD_MODE ? 'https://hackathon-olade.pp.ua' : 'http://localhost',
 };
