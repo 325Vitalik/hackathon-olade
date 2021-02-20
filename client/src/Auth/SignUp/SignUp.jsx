@@ -75,7 +75,15 @@ class SignUpComponent extends PureComponent {
 		const isFormValid = allProps.every((prop) => !this.state[prop]?.error);
 
 		if (isFormValid) {
-			this.props.registerUser(this.state);
+			const user = {
+				firstName: this.state.firstName.value,
+				lastName: this.state.lastName.value,
+				phone: this.state.phone.value,
+				email: this.state.email.value,
+				password: this.state.password.value,
+			};
+
+			this.props.registerUser(user);
 		}
 	};
 
