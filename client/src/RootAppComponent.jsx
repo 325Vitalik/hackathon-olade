@@ -1,6 +1,7 @@
 import React from "react";
 import SignUp from "./Auth/SignUp/SignUp";
 import SignIn from "./Auth/SignIn/SignIn";
+import Profile from "./Profile/index"
 import ExampleComponent from "./ExampleComponent/ExampleComponent";
 import { initialInsertCurrentUser } from "./Auth/authActions";
 import { Router } from "@reach/router";
@@ -17,6 +18,7 @@ class RootAppComponent extends React.Component {
 			<Router>
 				<SignIn path="sign-in" />
 				<SignUp path="sign-up" />
+				<Profile path="profile" />
 				<ExampleComponent path="/" />
 			</Router>
 		);
