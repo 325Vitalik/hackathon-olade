@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import styles from './styles.module.css'; 
+import styles from './styles.module.css';
 import {
   Button,
   Form,
@@ -9,23 +8,35 @@ import {
   Image,
   Icon
 } from 'semantic-ui-react';
+import {toast } from 'react-toastify';
 import { bindActionCreators } from 'redux';
 
-const Profile = ({ user}) => {
+const Profile = ({ user }) => {
   const [editMode, setEditMode] = useState(true);
-  const [username, setUserName] = useState('');
-  const [status, setStatus] = useState('');
-
-  const disableEditMode = () => {
-    setEditMode({ disabled: true });
+  const [firstName, setFirstName] = useState(user.firstName);
+  const [lastName, setLastName] = useState(user.lastName);
+  const [email, setEmail] = useState(user.email);
+  const [phone, setPhone] = useState(user.phone);
+  console.log(user)
+  const toggleEditMode = () => {
+    console.log(editMode)
+    setEditMode(!editMode);
   };
 
   const update = async () => {
-    if (!username) {
-      return;
+    if (!firstName||!lastName) {
+      toast.warn(`Для збереження необхідно заповнити поля ім'я та прізвища`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
     }
     try {
-      disableEditMode();
+      toggleEditMode();
     } catch (e) {
       console.log(e);
     }
@@ -35,7 +46,7 @@ const Profile = ({ user}) => {
     <Grid container textAlign="center" style={{ paddingTop: 30 }}>
       <Grid.Row>
         <Grid.Column width={6}>
-          <Image centered src={'download.png'} size="medium" rounded />
+          <Image centered src={'mock-avatar.png'} size="small" rounded />
           <br />
           <br />
         </Grid.Column>
@@ -43,56 +54,66 @@ const Profile = ({ user}) => {
 
           {editMode.disabled && (
             <>
-              <div className={styles.profileInfoRow} onDoubleClick={() => setEditMode({ disabled: false })}>
+              <div className={styles.profileInfoRow} onDoubleClick={toggleEditMode}>
                 <Icon disabled name='user' size="large" />
-                <p className={styles.profileInfoText}>Слободяник Максим</p>
+                <p className={styles.profileInfoText}>{firstName}</p>
               </div>
-              <br/>
-              <div className={styles.profileInfoRow} onDoubleClick={() => setEditMode({ disabled: false })}>
+              <br />
+              <div className={styles.profileInfoRow} onDoubleClick={toggleEditMode}>
+                <Icon disabled name='user' size="large" />
+                <p className={styles.profileInfoText}>{lastName}</p>
+              </div>
+              <br />
+              <div className={styles.profileInfoRow} onDoubleClick={toggleEditMode}>
                 <Icon disabled name='at' size="big" />
-                <p className={styles.profileInfoText}>maxslobodianyk@gmail.com</p>
+                <p className={styles.profileInfoText}>{email}</p>
               </div>
-              <br/>
-              <div className={styles.profileInfoRow} onDoubleClick={() => setEditMode({ disabled: false })}>
+              <br />
+              <div className={styles.profileInfoRow} onDoubleClick={toggleEditMode}>
                 <Icon disabled name='phone' size="large" />
-                <p className={styles.profileInfoText}>+38(095)305-09-11</p>
+                <p className={styles.profileInfoText}>{phone}</p>
               </div>
             </>
           )}
           {!editMode.disabled && (
             <Form onSubmit={update}>
               <Form.Input
-                icon="user"
+                icon="address card"
                 iconPosition="left"
                 placeholder="Ім'я користувача"
                 type="text"
-                value={username}
-                onChange={ev => setUserName(ev.target.value)}
-                isabled={editMode}
+                value={user.firstName}
+                onChange={ev => setFirstName(ev.target.value)}
+              />
+              <Form.Input
+                icon="address card"
+                iconPosition="left"
+                placeholder="Прізвище користувача"
+                type="text"
+                value={lastName}
+                onChange={ev => setLastName(ev.target.value)}
               />
               <Form.Input
                 icon="at"
                 iconPosition="left"
                 placeholder="Електронна пошта"
                 type="email"
-                value={status}
-                onChange={ev => setStatus(ev.target.value)}
-                isabled={editMode}
+                value={email}
+                onChange={ev => setEmail(ev.target.value)}
               />
               <Form.Input
                 icon="phone"
                 iconPosition="left"
                 placeholder="Номер телефону"
                 type="text"
-                disabled
-                value={''}
-                disabled={editMode}
+                value={phone}
+                onChange={ev => setPhone(ev.target.value)}
               />
               <br />
-                <div className={styles.buttonContainer}>
-                  <Button color="teal" type="submit">Зберегти</Button>
-                  <Button className={styles.button} onClick={() => disableEditMode}>Відмінити</Button>
-                </div>
+              <div className={styles.buttonContainer}>
+                <Button color="teal" type="submit" onClick={process}>Зберегти</Button>
+                <Button className={styles.button} onClick={toggleEditMode}>Відмінити</Button>
+              </div>
             </Form>
           )}
 
@@ -105,19 +126,11 @@ const Profile = ({ user}) => {
   );
 };
 
-Profile.propTypes = {
-
-};
-
-Profile.defaultProps = {
-  user: {}
-};
-
 const mapStateToProps = state => {
-  console.log(state)
   return {
-  user: state.auth.currentUser
-}};
+    user: state.auth.currentUser
+  }
+};
 
 const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
 
