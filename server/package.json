@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node build/index.js",
-    "build": "babel src --out-dir build",
+    "build": "babel src --out-dir build --copy-files",
+    "startProd": "npm run build && npm run start",
     "hot-server": "nodemon --exec babel-node src/index.js",
     "rebuild": "npm run build && node build/index.js",
     "fix-style": "eslint src --fix && prettier --write src/**/*"
@@ -14,6 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babel/polyfill": "^7.12.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
