@@ -64,7 +64,7 @@ class SignInComponent extends PureComponent {
 					</Form>
 					<Message>
 						Ще не маєте акунту?{" "}
-						<Link to={"/sign-up"} onClick={() => navigate("/sign-up")}>
+						<Link to={"/sign-up"}>
 							Зареєструватись
 						</Link>
 					</Message>
