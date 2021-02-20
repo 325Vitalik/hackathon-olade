@@ -106,7 +106,7 @@ const setCurrentUser = (user) => (dispatch, getStore) => {
 	});
 
 	getIdToken().then((token) => localStorage.setItem("@token", token));
-	navigate("/");
+	navigate("/search");
 };
 
 const getUser = (firebaseUser, additionalInfo = {}) => {

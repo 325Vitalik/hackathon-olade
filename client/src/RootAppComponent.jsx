@@ -3,7 +3,6 @@ import SignUp from "./Auth/SignUp/SignUp";
 import SignIn from "./Auth/SignIn/SignIn";
 import Profile from "./Profile/index"
 import PetPage from "./PetPage/index";
-import ExampleComponent from "./ExampleComponent/ExampleComponent";
 import { initialInsertCurrentUser } from "./Auth/authActions";
 import { Router } from "@reach/router";
 import { connect } from "react-redux";
@@ -24,7 +23,6 @@ class RootAppComponent extends React.Component {
 				<MainPage path="/" />
 				<Profile path="profile" />
 				<PetPage path="pet-profile/:id" />
-				<ExampleComponent path="/" />
 				<HomePage path="/search" />
 				<HomePage path="/found" />
 			</Router>
