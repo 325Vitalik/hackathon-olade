@@ -6,6 +6,7 @@ import { initialInsertCurrentUser } from "./Auth/authActions";
 import { Router } from "@reach/router";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import MainPage from "./MainPage/MainPage";
 
 class RootAppComponent extends React.Component {
 	componentDidMount = () => {
@@ -17,7 +18,7 @@ class RootAppComponent extends React.Component {
 			<Router>
 				<SignIn path="sign-in" />
 				<SignUp path="sign-up" />
-				<ExampleComponent path="/" />
+				<MainPage path="/" />
 			</Router>
 		);
 	}
