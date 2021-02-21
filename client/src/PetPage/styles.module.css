@@ -3,9 +3,18 @@
     justify-content: start;
     align-items: center;
 }
+.profileInfoTextTitle{
+    margin-left: 15px;
+    text-align: start;
+    font-size: 15pt;
+    margin-bottom: 25px;
+}
 .profileInfoText{
     margin-left: 15px;
+    text-align: start;
+    font-weight: 600;
     font-size: 20pt;
+    margin-bottom: 25px;
 }
 .myAnnouncements{
     margin-left: 15px;
@@ -22,4 +31,12 @@
 .editButton{
     cursor: pointer;
     color: cadetblue;
+}
+
+
+.mainContainer{
+    margin-top: 90px;
+    display: flex !important;
+    justify-content: center;
+    align-items: start;
 }
