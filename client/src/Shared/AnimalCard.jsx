@@ -6,10 +6,10 @@ import {
 } from 'semantic-ui-react';
 import {navigate} from '@reach/router';
 
-export const AnimalCard = props => {
+export const AnimalCard = ({card}) => {
 	const id = 0;
 	return (
-		<Card className={styles.animalCard}>
+		<Card className={styles.animalCard} onClick={() => {navigate("/pet-profile/23")}}>
 			<Image src='https://react.semantic-ui.com/images/avatar/large/matthew.png' wrapped ui={false} />
 			<Card.Content>
 				<Card.Header onClick={() => navigate(`/pet-profile/${id}`)}>Моя Псина</Card.Header>

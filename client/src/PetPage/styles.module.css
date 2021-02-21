@@ -19,3 +19,7 @@
 .button{
     margin-left: 15px;
 }
+.editButton{
+    cursor: pointer;
+    color: cadetblue;
+}
