@@ -38,7 +38,7 @@ router.post('/', async (req, res, next) => {
 router.get('/photo/:petid', async (req, res, next) => {
 	try {
 		const petid = req.params.petid;
-		const pets = petService.getPetsWithSameImage(petid);
+		const pets = await petService.getPetsWithSameImage(petid);
 		res.send(pets);
 	} catch (error) {
 		next(error);
