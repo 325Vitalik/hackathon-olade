@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import styles from './styles.module.css';
 import {
   Button,
@@ -12,6 +12,7 @@ import Header from '../Shared/Header'
 import { PostList } from '../Shared/PostListComponent'
 import { bindActionCreators } from 'redux';
 import { config } from "../config";
+import { loadPetsWithQuery } from '../MainPageComponent/petActions';
 
 const Profile = ({ user }) => {
   const [editMode, setEditMode] = useState(false);
@@ -19,8 +20,15 @@ const Profile = ({ user }) => {
   const [lastName, setLastName] = useState(user.lastName);
   const [email, setEmail] = useState(user.email);
   const [phone, setPhone] = useState(user.phone);
-
-
+  
+  const dispatch=useDispatch();
+  const pets=useSelector(state=>state.pets.pets);
+  console.log(pets);
+  
+  useEffect(()=>{
+    console.log(user.uid);
+    dispatch(loadPetsWithQuery({userId:user.uid}))
+  }, []);
   const toggleEditMode = () => {
     setEditMode(!editMode);
   };
@@ -149,7 +157,7 @@ const Profile = ({ user }) => {
         <Grid.Row>
           <p className={styles.myAnnouncements}>Мої оголошення</p>
         </Grid.Row>
-        <PostList list={[1, 2, 3, 4, 5, 6, 7, 8, 9]}></PostList>
+        <PostList list={pets}></PostList>
       </Grid>
     </Container>
   </>

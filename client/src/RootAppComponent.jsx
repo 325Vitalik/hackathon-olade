@@ -12,6 +12,7 @@ import HomePage from "./MainPageComponent/HomePage";
 import SubmitForm from "./SumbitForm";
 import { auth, getCurrentUser } from "./Auth/firebaseService";
 import Loader from "react-loader-spinner";
+import PureHomePage from "./PureHomePage/PureHomePage";
 
 class RootAppComponent extends React.Component {
 	constructor() {
@@ -35,16 +36,19 @@ class RootAppComponent extends React.Component {
 		return (
 			<>
 				{this.state.load ? (
-					<Loader type="Puff" color="#2b2b2bd9" height={"100vh"} width={"100vw"} />
+					<div className={'submit-form-loader-wrapper'}>
+						<Loader type="Puff" color="#2b2b2bd9" height={'100vh'} width={100} />
+					</div>
 				) : (
 					<Router>
 						{isLoggedIn ? (
 							<>
-								<Profile path="profile" />
-								<PetPage path="pet-profile/:id" />
+								<Profile path="/profile" />
+								<PetPage path="/pet-profile/:id" />
 								<HomePage path="/search" type="search" />
 								<HomePage path="/found" type="found" />
 								<SubmitForm path="/submit-form" searchType={this.props.searchType} />
+								<PureHomePage path="/photo-result" />
 							</>
 						) : null}
 						<SignIn path="sign-in" />

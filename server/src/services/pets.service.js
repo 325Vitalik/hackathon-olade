@@ -16,7 +16,7 @@ const getPetDocuments = async (query) => {
 	const petCollection = await petFinderDbService.getPetCollection();
 	const sortCriteria = getSortFromType(query.type);
 
-	const {allowedRadius,lossLocationCoordinates,...filteredQuery}=query
+	const { allowedRadius, lossLocationCoordinates, ...filteredQuery } = query;
 
 	return await petCollection
 		.aggregate([
@@ -75,14 +75,14 @@ const insertPetDocument = async (petDocument, userId) => {
 const getPetsWithSameImage = (petId) => {
 	return new Promise(async (resolve, reject) => {
 		const petCollection = await petFinderDbService.getPetCollection();
-		const sortCriteria = getSortFromType(query.animalType);
+		const selectedDocument = await petCollection.findOne({ _id: petId });
 
-		const selectedCollection = await petCollection.findOne({ _id: petId });
+		const sortCriteria = getSortFromType(selectedDocument.type);
 
 		let samePets = [];
-		petCollection.aggregate([{ $sort: sortCriteria }]).forEach(
+		petCollection.aggregate([{ $sort:  { [sortCriteria]: 1 }}]).forEach(
 			(document) => {
-				if (hammingDistance(selectedCollection.imgHash, document.imgHash) >= 0.8) {
+				if (hammingDistance(selectedDocument.imgHash, document.imgHash) >= 0.11) {
 					samePets.push(document);
 				}
 			},

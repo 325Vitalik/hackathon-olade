@@ -17,8 +17,9 @@ import Header from '../Shared/Header'
 import { getAuthHeader } from "../Auth/firebaseService";
 import { bindActionCreators } from 'redux';
 import InfoModal from './InfoModal';
+import { findByImage } from '../MainPageComponent/petActions';
 
-const PetPage = () => {
+const PetPage = ({findByImage}) => {
 
   const [card, setCard] = useState({});
   const [loading, setIsLoading] = useState(true);
@@ -48,6 +49,7 @@ const PetPage = () => {
       <Header />
       <Container className={styles.mainContainer}>
         <Grid container textAlign="center" style={{ paddingTop: 30 }}>
+
           {loading ? (
             <Loader type="Puff" color="#2b2b2bd9" height={100} width={100} />
           ) : (
@@ -56,8 +58,8 @@ const PetPage = () => {
                   <Grid.Column width={7}>
                     <Image centered src={card.animalImageLink} size="middle" rounded />
                     <Grid.Column>
-                      <Button className={styles.searchButton} onClick={() => { }} color="primary" fluid size="large">
-                        Знайти схожчі за фото
+                    <Button className={styles.searchButton} onClick={()=>findByImage(card._id)} color="primary" fluid size="large">
+								Знайти схожчі за фото
 							</Button>
                     </Grid.Column>
                     <Grid.Column>
@@ -140,7 +142,9 @@ const mapStateToProps = state => {
   }
 };
 
-const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({
+  findByImage
+}, dispatch);
 
 export default connect(
   mapStateToProps,

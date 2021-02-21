@@ -9,7 +9,6 @@ export const setRouteToRedirect = (route) => (dispatch, getStore) => {
 };
 
 export const setSearchVariant = (tab)=>(dispatch, getStore) => {
-	console.log(tab);
 	dispatch({
 		type: SET_TYPE,
 		tab,

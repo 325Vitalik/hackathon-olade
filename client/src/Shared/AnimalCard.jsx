@@ -16,7 +16,6 @@ const getAnimalFooter=(animalType, {type})=>{
 
 export const AnimalCard = ({ cardData }) => {
 	const id = 0;
-	console.log(cardData);
 	return (
 		<Card
 			color={cardData.type==='found'?'green':'red'}

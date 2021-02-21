@@ -168,7 +168,7 @@ export const SearchAnimalForm = () => {
 						);
 					}}
 				>
-					Submit
+					Пошук
 				</Button>
 			</Form>
 		</div>
