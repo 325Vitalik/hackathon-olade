@@ -1,6 +1,10 @@
 FROM node:lts-alpine as build
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
+
+# Install python/pip
+RUN apk add --no-cache python2
+
 COPY ./package.json /app/package.json
 RUN npm install --no-optional
 COPY . /app
