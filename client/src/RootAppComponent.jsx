@@ -27,7 +27,7 @@ class RootAppComponent extends React.Component {
 						<PetPage path="pet-profile/:id" />
 						<HomePage path="/search" />
 						<HomePage path="/found" />
-						<SubmitForm path="/submit-form" />
+						<SubmitForm path="/submit-form" searchType={this.props.searchType}/>
 					</>
 				) : null}
 				<SignIn path="sign-in" />
@@ -45,6 +45,7 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state) {
 	return {
 		currentUser: state.auth.currentUser,
+		searchType: state.main.searchType
 	};
 }
 

@@ -28,7 +28,7 @@ router.post('/', async (req, res, next) => {
 	try {
 		const currentUserUid = getUidFromRequest(req);
 		const pet = req.body;
-		const petId = petService.insertPetDocument(pet, currentUserUid);
+		const petId = await petService.insertPetDocument(pet, currentUserUid);
 		res.send(petId);
 	} catch (error) {
 		next(error);
