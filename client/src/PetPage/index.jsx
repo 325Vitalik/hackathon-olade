@@ -6,14 +6,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styles from './styles.module.css';
 import {
-  Button,
+  Image,
   Grid
 } from 'semantic-ui-react';
 import { bindActionCreators } from 'redux';
 
 
 const PetPage = ({ user }) => {
-  const [editMode, setEditMode] = useState(true);
+  const [editMode, setEditMode] = useState(false);
   const [username, setUserName] = useState('');
   const [status, setStatus] = useState('');
 
@@ -21,7 +21,7 @@ const PetPage = ({ user }) => {
     setEditMode({ disabled: true });
   };
 
-  const {id} = useParams();
+  const { id } = useParams();
 
   const update = async () => {
     if (!username) {
@@ -36,10 +36,18 @@ const PetPage = ({ user }) => {
 
   return (
     <Grid container textAlign="center" style={{ paddingTop: 30 }}>
-      <Grid.Row>
-  <p>Entered id: {id}</p>
-        <Button>Знайти схожі оголошення</Button>
-      </Grid.Row>
+      <Grid.Column width={8}>
+      <Image centered src={'mock-avatar.png'} size="middle" rounded />
+            <br />
+            {!editMode && (
+              <p className={styles.editButton}>Редагувати оголошення</p>)}
+            <br />
+      </Grid.Column>
+      <Grid.Column width={8}>
+        <div className={styles.profileInfoText}>
+efefw
+        </div>
+      </Grid.Column>
     </Grid>
   );
 };

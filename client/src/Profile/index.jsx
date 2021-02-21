@@ -56,7 +56,7 @@ const Profile = ({ user }) => {
             <Image centered src={'mock-avatar.png'} size="small" rounded />
             <br />
             {!editMode && (
-              <p className={styles.editButton} onClick={toggleEditMode}>Edit profile</p>)}
+              <p className={styles.editButton} onClick={toggleEditMode}>Редагувати профіль</p>)}
             <br />
           </Grid.Column>
           <Grid.Column width={10}>
