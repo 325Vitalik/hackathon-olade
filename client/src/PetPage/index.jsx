@@ -19,6 +19,22 @@ import { bindActionCreators } from 'redux';
 import InfoModal from './InfoModal';
 import { findByImage } from '../MainPageComponent/petActions';
 
+const colourMapper={
+  brown:'Коричневий',
+  white: 'Білий',
+  black: 'Чорний'
+}
+
+const breedMapper={
+  abyssinian:'Абісинська',
+  aegean:'Егейська',
+  bobtail:'Бобтейл',
+  other:'Інша',
+  shepherd:'Вівчарка',
+  labrador:'Лабрадор-ретривер',
+  laika: 'Лайка'
+}
+
 const PetPage = ({findByImage}) => {
 
   const [card, setCard] = useState({});
@@ -97,13 +113,13 @@ const PetPage = ({findByImage}) => {
                       {card.animalName}
                     </div>
                     <div className={styles.profileInfoText}>
-                      {card.animalType === 'dog' ? 'собака' : 'кіт'}
+                      {card.animalType === 'dog' ? 'Собака' : 'Кіт'}
                     </div>
                     <div className={styles.profileInfoText}>
-                      {card.animalBreed}
+                      {breedMapper[card.animalBreed] || card.animalBreed}
                     </div>
                     <div className={styles.profileInfoText}>
-                      {card.animalColour}
+                      {colourMapper[card.animalColour] || card.animalColour}
                     </div>
                     <div className={styles.profileInfoText}>
                       {card.lossDate}
