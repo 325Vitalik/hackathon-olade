@@ -27,7 +27,7 @@ export const AnimalCard = ({ cardData }) => {
 		>
 			<Image src={cardData.animalImageLink} wrapped ui={false} />
 			<Card.Content>
-				<Card.Header onClick={() => navigate(`/pet-profile/${id}`)}>
+				<Card.Header onClick={() => navigate(`/pet-profile/${cardData._id}`)}>
 					{cardData.animalName || "None"}
 				</Card.Header>
 				<Card.Meta>

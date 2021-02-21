@@ -20,6 +20,7 @@ const Profile = ({ user }) => {
   const [email, setEmail] = useState(user.email);
   const [phone, setPhone] = useState(user.phone);
 
+
   const toggleEditMode = () => {
     setEditMode(!editMode);
   };

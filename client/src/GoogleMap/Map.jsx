@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import GoogleMapReact from "google-map-react";
 
-const apiIsLoaded = (map, maps, center) => {
+const apiIsLoaded = (map, maps, center,radius) => {
   const circle = new google.maps.Circle({
     strokeColor: "#FF0000",
     strokeOpacity: 0.8,
@@ -11,20 +11,20 @@ const apiIsLoaded = (map, maps, center) => {
     fillOpacity: 0.3,
     map,
     center: center,
-    radius: 1000
+    radius: radius
   });
 };
 
 const googleAPIKey = "AIzaSyB3ocaslSkJF_-Ck3U6RhdGTcnBSoikZUM";
 
-const MapExample = ({ center, zoom }) => {
+const MapExample = ({ center, zoom,radius }) => {
   return (
     <GoogleMapReact
       bootstrapURLKeys={{ key: googleAPIKey }}
       yesIWantToUseGoogleMapApiInternals={true}
       defaultZoom={zoom}
       defaultCenter={center}
-      onGoogleApiLoaded={({ map, maps }) => apiIsLoaded(map, maps, center)}
+      onGoogleApiLoaded={({ map, maps }) => apiIsLoaded(map, maps, center,radius)}
     />
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Map from '../GoogleMap/Map'
 import {
   useParams
@@ -8,35 +8,37 @@ import styles from './styles.module.css';
 import {
   Image,
   Container,
-  Grid
+  Grid,
+  Button
 } from 'semantic-ui-react';
+import { config } from "../config";
 import Header from '../Shared/Header'
+import { getAuthHeader } from "../Auth/firebaseService";
 import { bindActionCreators } from 'redux';
 
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
-const PetPage = ({ user }) => {
-  const [editMode, setEditMode] = useState(false);
-  const [username, setUserName] = useState('');
-  const [status, setStatus] = useState('');
+const PetPage = () => {
 
-  const disableEditMode = () => {
-    setEditMode({ disabled: true });
-  };
-
+  const [card, setCard] = useState({});
+  const [loading, setIsLoading] = useState(true);
   const { id } = useParams();
+  
+  useEffect(() => {
+    const url = new URL(`${config.hostname}/pet/${id}`);
+    fetch(url,{		headers: {
+			Authorization: getAuthHeader(),
+		},}).then(async (response) => {
+      if (response.ok) {
+        const c = await response.json()
+        console.log(c);
+        setCard(c);
+        setIsLoading(false)
+      } else {
+        console.log(response);
+      }
+    });
+  },[]);
 
-  const update = async () => {
-    if (!username) {
-      return;
-    }
-    try {
-      disableEditMode();
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  return (
+  return loading? (<></>):(
     <>
       <Header />
       <Container className={styles.mainContainer}>
@@ -44,11 +46,11 @@ const PetPage = ({ user }) => {
 
           <Grid.Row>
             <Grid.Column width={7}>
-              <Image centered src={'mock-avatar.png'} size="middle" rounded />
-              <br />
-              {!editMode && (
-                <p className={styles.editButton}>Редагувати оголошення</p>)}
-              <br />
+              <Image centered src={card.animalImageLink} size="middle" rounded />
+
+              <Button className={styles.searchButton} onClick={()=>{}} color="primary" fluid size="large">
+								Знайти схожчі за фото
+							</Button>
             </Grid.Column>
             <Grid.Column width={3}>
               <div className={styles.profileInfoTextTitle}>
@@ -75,38 +77,37 @@ const PetPage = ({ user }) => {
             </Grid.Column>
             <Grid.Column width={6}>
               <div className={styles.profileInfoText}>
-                Бобік
+                {card.animalName}
         </div>
               <div className={styles.profileInfoText}>
-                Собакен
+              {card.animalType === 'dog' ? 'собака' : 'кіт'}
         </div>
               <div className={styles.profileInfoText}>
-                Лабрадор
+              {card.animalBreed}
         </div>
               <div className={styles.profileInfoText}>
-                Коричневий
+                {card.animalColour}
         </div>
               <div className={styles.profileInfoText}>
-                02.12.2020
+                {card.lossDate}
         </div>
               <div className={styles.profileInfoText}>
-                100$
+                {card.award} 	₴
         </div>
               <div className={styles.profileInfoText}>
-                Красивий песик без лапок
+                {card.animalDescription}
         </div>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
             <div style={{ width: "100%", height: "300px" }}>
-              <Map center={{ lat: 49.8699409, lng: 24.0089085 }} zoom={13} />
+              <Map center={card.lossLocationCoordinates} radius={card.allowedRadius} zoom={13-0.45*(card.allowedRadius/1000)} />
             </div>
           </Grid.Row>
         </Grid>
       </Container>
     </>
-
-  );
+  )
 };
 
 PetPage.propTypes = {
