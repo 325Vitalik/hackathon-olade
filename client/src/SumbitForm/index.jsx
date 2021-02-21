@@ -14,8 +14,6 @@ import SelectColour from "./SelecColour";
 import SelectRadius from "./SelectRadius";
 import SelectBreed from "./SelecBreed";
 import { DateInput } from "semantic-ui-calendar-react";
-import { getLatLng, geocodeByPlaceId } from "react-google-places-autocomplete";
-import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import debounce from "debounce";
 import { config } from "../config";
 import ImageUploader from "./ImageUploader";
@@ -23,6 +21,7 @@ import AppHeader from "../Shared/Header";
 import { navigate } from "@reach/router";
 import { getAuthHeader } from "../Auth/firebaseService";
 import { useSelector } from "react-redux";
+import SelectAddress from "./SelectAddress";
 
 const submitFormActions = {
   setAnimalType: "SET_ANIMAL_TYPE",
@@ -36,7 +35,7 @@ const submitFormActions = {
   setAllowedRadius: "SET_ALLOWED_RADIUS",
   setAnimalDescription: "SET_ANIMAL_DESCRIPTION",
   setAward: "SET_AWARD",
-  setLoading: "SET_LOADING"
+  setLoading: "SET_LOADING",
 };
 
 function init() {
@@ -80,9 +79,9 @@ function reducer(state, action) {
     case submitFormActions.setAnimalImage:
       return { ...state, animalImageLink: action.payload };
     case submitFormActions.setLoading:
-      return {...state, isBeingSubmitted:action.payload}
+      return { ...state, isBeingSubmitted: action.payload };
     case submitFormActions.setAnimalBreed:
-      return {...state, animalBreed:action.payload}
+      return { ...state, animalBreed: action.payload };
     default:
       return state;
   }
@@ -90,7 +89,7 @@ function reducer(state, action) {
 
 const SubmitForm = () => {
   const [state, dispatch] = useReducer(reducer, {}, init);
-  const {searchType}=useSelector(state=>state.main);
+  const { searchType } = useSelector((state) => state.main);
 
   const onDescriptionChange = debounce((e, { value }) => {
     dispatch({ type: submitFormActions.setAnimalDescription, payload: value });
@@ -104,7 +103,7 @@ const SubmitForm = () => {
       <AppHeader />
       {state.isBeingSubmitted ? (
         <div className={"submit-form-loader-wrapper"}>
-            <Loader type="Puff" color="#2b2b2bd9" height={'100vh'} width={100} />
+          <Loader type="Puff" color="#2b2b2bd9" height={"100vh"} width={100} />
         </div>
       ) : (
         <Container className={"submit-form-container"}>
@@ -178,7 +177,7 @@ const SubmitForm = () => {
                     }}
                   />
                 </Form.Field>
-                <Form.Field hidden={searchType==='found'}>
+                <Form.Field hidden={searchType === "found"}>
                   <label>Винагорода</label>
                   <Form.Input
                     placeholder={"Винагорода"}
@@ -192,7 +191,7 @@ const SubmitForm = () => {
                     }}
                   />
                 </Form.Field>
-                <Form.Field hidden={searchType==='found'}>
+                <Form.Field hidden={searchType === "found"}>
                   <label>Дата втрати</label>
                   <DateInput
                     name={"Дата втрати"}
@@ -218,30 +217,24 @@ const SubmitForm = () => {
               <Form.Group widths={"equal"}>
                 <Form.Field>
                   <label>Приблизні координати</label>
-                  <GooglePlacesAutocomplete
-                    debounce={2000}
-                    selectProps={{
-                      value: state.lossLocation,
-                      onChange: (addressData) => {
-                        geocodeByPlaceId(addressData.value.place_id)
-                          .then((result) => getLatLng(result[0]))
-                          .then((coordinates) =>
-                            dispatch({
-                              type:
-                                submitFormActions.setAnimalLossLocationCoordinates,
-                              payload: coordinates,
-                            })
-                          );
-                        dispatch({
-                          type: submitFormActions.setAnimalLossLocation,
-                          payload: addressData,
-                        });
-                      },
-                    }}
-                    apiKey={config["api-key"]}
+                  <SelectAddress
+                    lossLocation={state.lossLocation}
+                    onChangeCoordinates={(coordinates) =>
+                      dispatch({
+                        type:
+                          submitFormActions.setAnimalLossLocationCoordinates,
+                        payload: coordinates,
+                      })
+                    }
+                    onChangeLocation={(addressData) =>
+                      dispatch({
+                        type: submitFormActions.setAnimalLossLocation,
+                        payload: addressData,
+                      })
+                    }
                   />
                 </Form.Field>
-                <Form.Field hidden={searchType==='found'}>
+                <Form.Field hidden={searchType === "found"}>
                   <label>Радіус пошуку</label>
                   <SelectRadius
                     value={state.allowedRadius}
@@ -268,27 +261,32 @@ const SubmitForm = () => {
                 disabled={!state.animalImageLink}
                 fluid
                 onClick={() => {
-                  dispatch({type:submitFormActions.setLoading, payload:true});
+                  dispatch({
+                    type: submitFormActions.setLoading,
+                    payload: true,
+                  });
                   const {
                     shouldNameNotBeValidated,
                     isBeingSubmitted,
                     lossLocation,
                     ...dataToBeSent
-                  }=state;
+                  } = state;
 
-            			const  postURL= new URL(`${config.hostname}/pet`);
+                  const postURL = new URL(`${config.hostname}/pet`);
                   fetch(postURL, {
                     method: "POST",
                     headers: {
                       "Content-Type": "application/json",
-                      "Authorization": getAuthHeader()
+                      Authorization: getAuthHeader(),
                     },
-                    body: JSON.stringify({...dataToBeSent, type:searchType}),
-                  }).then(()=>{
-                    dispatch({type:submitFormActions.setLoading, payload:false});
+                    body: JSON.stringify({ ...dataToBeSent, type: searchType }),
+                  }).then(() => {
+                    dispatch({
+                      type: submitFormActions.setLoading,
+                      payload: false,
+                    });
                     navigate(`/${searchType}`);
-
-                  })
+                  });
                 }}
               >
                 Створити
