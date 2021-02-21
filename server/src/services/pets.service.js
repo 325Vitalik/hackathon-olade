@@ -21,7 +21,6 @@ const getPetDocuments = async (query) => {
 	return await petCollection
 		.aggregate([
 			{ $match: filteredQuery },
-			{ $sort: { [sortCriteria]: 1 } },
 			{
 				$lookup: {
 					from: 'users',
@@ -30,21 +29,23 @@ const getPetDocuments = async (query) => {
 					as: 'user',
 				},
 			},
+			{ $sort: { [sortCriteria]: 1 } },
 		])
 		.toArray()
 		.then((documents) =>
 			documents
 				?.filter((doc) => {
-					console.log(query, doc);
-					if (!query.allowRadius || !doc.lossLocationCoordinates || !query.lossLocationCoordinates) {
+					if (!query.allowedRadius || !doc.lossLocationCoordinates || !query.lossLocationCoordinates) {
 						return true;
 					}
 
-					return compareCoordinatesService.isInRadius(
+					const res = compareCoordinatesService.isInRadius(
 						doc.lossLocationCoordinates,
 						query.lossLocationCoordinates,
-						query.allowRadius
+						query.allowedRadius
 					);
+
+					return res;
 				})
 				.map((doc) => ({ ...doc, user: doc.user[0] }))
 		);
