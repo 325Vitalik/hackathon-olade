@@ -7,10 +7,11 @@ import { connect, useDispatch } from "react-redux";
 import { signOut } from "../Auth/authActions";
 import { bindActionCreators } from "redux";
 
-const Header = ({ signOut, currentUser }) => {
+const Header = ({ signOut, currentUser, searchType }) => {
 	const location = useLocation();
-	const isSearch = location.pathname === "/search";
-	const isFound = location.pathname === "/found";
+	console.log(location.pathname !== "/found" && searchType === 'search');
+	const isSearch = location.pathname === "/search" || (location.pathname !== "/found" && searchType === 'search');
+	const isFound = location.pathname === "/found" || (!isSearch && searchType === 'found');
 
 	return (
 		<Menu borderless fixed="top" className={styles.menuStyle}>
@@ -63,6 +64,7 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state) {
 	return {
 		currentUser: state.auth.currentUser,
+		searchType: state.main.searchType
 	};
 }
 

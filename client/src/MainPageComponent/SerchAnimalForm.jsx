@@ -1,15 +1,27 @@
 import React, { useState } from 'react';
 import styles from './main-page.module.sass'
 import {Button, Form} from 'semantic-ui-react';
-import { navigate } from '@reach/router';
+import { navigate, useLocation } from '@reach/router';
+import { useDispatch } from 'react-redux';
+import {setSearchVariant} from './../MainPage/mainPageActions'
 
 export const SearchAnimalForm = () => {
 	const [animalKind, setAnimalKind] = useState('dog');
+	const dispatch=useDispatch();
+	const location=useLocation();
+
 	return (
 		<div className={styles.searchFormWrapper}>
 			<Form className={styles.searchForm}>
 				<Form.Field>
-				<Button fluid onClick={()=>navigate('/submit-form')}>Подати оголошення</Button>
+				<Button fluid onClick={()=>{
+					if(location.pathname === '/search'){
+						dispatch(setSearchVariant('search'));
+					}else{
+						dispatch(setSearchVariant('found'))
+					}
+					navigate('/submit-form');
+				}}>Подати оголошення</Button>
 				</Form.Field>
 				<Form.Group inline>
 					<label>Вид:</label>
