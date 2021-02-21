@@ -82,9 +82,7 @@ const getPetsWithSameImage = (petId) => {
 		let samePets = [];
 		petCollection.aggregate([{ $sort:  { [sortCriteria]: 1 }}]).forEach(
 			(document) => {
-				// console.log(document);
 				if (hammingDistance(selectedDocument.imgHash, document.imgHash) >= 0.11) {
-					console.log('AAAAAAA______');
 					samePets.push(document);
 				}
 			},
