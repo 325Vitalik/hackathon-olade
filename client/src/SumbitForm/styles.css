@@ -19,6 +19,15 @@
     .submit-form-pets-main-info-wrapper{
         display: block;
     }
+    .submit-form-pets-main-info{
+        width: 100%;
+    }
+    .submit-form-upload-photo-wrapper{
+        display: flex;
+        align-self: center;
+        justify-content: center;
+        width: 100%;
+    }
 }
 
 .submit-form-colour-prompt{
@@ -32,4 +41,26 @@
 
 .submit-form-additional-info-wrapper{
     margin-bottom: 10px;
+}
+
+.submit-form-upload{
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    justify-content: center;
+}
+
+.submit-form-upload-button{
+    margin-top: 10px !important;
+    width: 100%;
+}
+
+.submit-form-container{
+    margin-top: 70px;
+}
+
+.submit-form-header{
+    text-align: center;
+    margin-top: 85px;
+    margin-bottom: 15px;
 }

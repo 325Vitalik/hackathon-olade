@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import MainPage from "./MainPage/MainPage";
 import { HomePage } from "./MainPageComponent/HomePage";
+import SubmitForm from "./SumbitForm";
 
 class RootAppComponent extends React.Component {
 	componentDidMount = () => {
@@ -26,6 +27,7 @@ class RootAppComponent extends React.Component {
 						<PetPage path="pet-profile/:id" />
 						<HomePage path="/search" />
 						<HomePage path="/found" />
+						<SubmitForm path="/submit-form" />
 					</>
 				) : null}
 				<SignIn path="sign-in" />
