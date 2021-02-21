@@ -1,4 +1,6 @@
 require('dotenv').config();
+const AWS = require('aws-sdk');
+
 const PROD_MODE = process.env.PROD_MODE || false;
 
 const serviceAccount = {
@@ -14,6 +16,11 @@ const serviceAccount = {
 	client_x509_cert_url:
 		'https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-gx52q%40hackathon-olade.iam.gserviceaccount.com',
 };
+
+export const s3Client = new AWS.S3({
+    accessKeyId: process.env.AWS_ACCESS_KEY,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+});
 
 export const config = {
 	port: 5000,

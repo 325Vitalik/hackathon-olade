@@ -95,18 +95,19 @@ export const initialInsertCurrentUser = () => (dispatch, getStore) => {
 };
 
 export const signOut = () => async (dispatch, getStore) => {
-	await signOutCurrentUser();
 	dispatch(setCurrentUser(null));
+	await signOutCurrentUser();
 };
 
 const setCurrentUser = (user) => (dispatch, getStore) => {
+	const routeToRedirect = getStore().main.routeToRedirect;
 	dispatch({
 		type: SET_CURRENT_USER_DATA,
 		user,
 	});
 
 	getIdToken().then((token) => localStorage.setItem("@token", token));
-	navigate("/");
+	navigate(routeToRedirect || "/");
 };
 
 const getUser = (firebaseUser, additionalInfo = {}) => {
