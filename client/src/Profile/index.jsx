@@ -6,76 +6,60 @@ import {
   Form,
   Grid,
   Image,
-  Icon
+  Container
 } from 'semantic-ui-react';
-import {toast } from 'react-toastify';
+import Header from '../Shared/Header'
+import { PostList } from '../Shared/PostListComponent'
 import { bindActionCreators } from 'redux';
+import { config } from "../config";
 
 const Profile = ({ user }) => {
-  const [editMode, setEditMode] = useState(true);
+  const [editMode, setEditMode] = useState(false);
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
   const [email, setEmail] = useState(user.email);
   const [phone, setPhone] = useState(user.phone);
-  console.log(user)
+
   const toggleEditMode = () => {
-    console.log(editMode)
     setEditMode(!editMode);
   };
 
   const update = async () => {
-    if (!firstName||!lastName) {
-      toast.warn(`Для збереження необхідно заповнити поля ім'я та прізвища`, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        });
-    }
+    const url = new URL(`${config.hostname}/user/update`);
+    const updatedUser = {...user, firstName,lastName,email,phone}
     try {
-      toggleEditMode();
+      fetch(url, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ user: updatedUser }),
+			}).then(async (postResponse) => {
+				if (postResponse.ok) {
+
+          toggleEditMode();
+				} else {
+					console.log(postResponse);
+				}
+			});
     } catch (e) {
       console.log(e);
     }
   };
 
-  return (
-    <Grid container textAlign="center" style={{ paddingTop: 30 }}>
-      <Grid.Row>
-        <Grid.Column width={6}>
-          <Image centered src={'mock-avatar.png'} size="small" rounded />
-          <br />
-          <br />
-        </Grid.Column>
-        <Grid.Column width={10}>
-
-          {editMode.disabled && (
-            <>
-              <div className={styles.profileInfoRow} onDoubleClick={toggleEditMode}>
-                <Icon disabled name='user' size="large" />
-                <p className={styles.profileInfoText}>{firstName}</p>
-              </div>
-              <br />
-              <div className={styles.profileInfoRow} onDoubleClick={toggleEditMode}>
-                <Icon disabled name='user' size="large" />
-                <p className={styles.profileInfoText}>{lastName}</p>
-              </div>
-              <br />
-              <div className={styles.profileInfoRow} onDoubleClick={toggleEditMode}>
-                <Icon disabled name='at' size="big" />
-                <p className={styles.profileInfoText}>{email}</p>
-              </div>
-              <br />
-              <div className={styles.profileInfoRow} onDoubleClick={toggleEditMode}>
-                <Icon disabled name='phone' size="large" />
-                <p className={styles.profileInfoText}>{phone}</p>
-              </div>
-            </>
-          )}
-          {!editMode.disabled && (
+  return (<>
+    <Header />
+    <Container className={styles.mainContainer}>
+      <Grid container textAlign="center" style={{ paddingTop: 30 }}>
+        <Grid.Row>
+          <Grid.Column width={6}>
+            <Image centered src={'mock-avatar.png'} size="small" rounded />
+            <br />
+            {!editMode && (
+              <p className={styles.editButton} onClick={toggleEditMode}>Edit profile</p>)}
+            <br />
+          </Grid.Column>
+          <Grid.Column width={10}>
             <Form onSubmit={update}>
               <Form.Input
                 icon="address card"
@@ -83,6 +67,7 @@ const Profile = ({ user }) => {
                 placeholder="Ім'я користувача"
                 type="text"
                 value={user.firstName}
+                disabled={!editMode}
                 onChange={ev => setFirstName(ev.target.value)}
               />
               <Form.Input
@@ -91,6 +76,7 @@ const Profile = ({ user }) => {
                 placeholder="Прізвище користувача"
                 type="text"
                 value={lastName}
+                disabled={!editMode}
                 onChange={ev => setLastName(ev.target.value)}
               />
               <Form.Input
@@ -99,30 +85,38 @@ const Profile = ({ user }) => {
                 placeholder="Електронна пошта"
                 type="email"
                 value={email}
+                disabled={!editMode}
                 onChange={ev => setEmail(ev.target.value)}
               />
-              <Form.Input
+              <Form.Input className={styles.infoInput}
                 icon="phone"
                 iconPosition="left"
                 placeholder="Номер телефону"
                 type="text"
                 value={phone}
+                disabled={!editMode}
                 onChange={ev => setPhone(ev.target.value)}
               />
               <br />
-              <div className={styles.buttonContainer}>
-                <Button color="teal" type="submit" onClick={process}>Зберегти</Button>
-                <Button className={styles.button} onClick={toggleEditMode}>Відмінити</Button>
-              </div>
+              {editMode && (
+                <div className={styles.buttonContainer}>
+                  <Button color="teal" type="submit">Зберегти</Button>
+                  <Button className={styles.button} onClick={() => toggleEditMode()}>Відмінити</Button>
+                </div>
+              )}
             </Form>
-          )}
 
-        </Grid.Column>
-      </Grid.Row>
-      <Grid.Row>
-        <p className={styles.myAnnouncements}>Мої оголошення</p>
-      </Grid.Row>
-    </Grid>
+
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <p className={styles.myAnnouncements}>Мої оголошення</p>
+        </Grid.Row>
+        <PostList list={[1, 2, 3, 4, 5, 6, 7, 8, 9]}></PostList>
+      </Grid>
+    </Container>
+  </>
+
   );
 };
 
