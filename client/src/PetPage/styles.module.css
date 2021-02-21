@@ -28,9 +28,9 @@
 .button{
     margin-left: 15px;
 }
-.editButton{
+.searchButton{
     cursor: pointer;
-    color: cadetblue;
+    margin-top: 20px !important;
 }
 
 
