@@ -2,6 +2,7 @@ import { getUidFromRequest } from './firebase.service';
 import { petFinderDbService } from './petFinderDb.service';
 import { uid } from 'uid';
 import { hashService } from './hash.service';
+import { compareCoordinatesService } from './compareCoordinates.servise';
 
 const getSortFromType = (type) => {
 	if (type === 'search') {
@@ -29,7 +30,21 @@ const getPetDocuments = async (query) => {
 			},
 		])
 		.toArray()
-		.then((documents) => documents.map((doc) => ({ ...doc, user: doc.user[0] })));
+		.then((documents) =>
+			documents
+				?.filter((doc) => {
+					if (!query.allowRadius || doc.lossLocationCoordinates || query.lossLocationCoordinates) {
+						return true;
+					}
+
+					return compareCoordinatesService.isInRadius(
+						doc.lossLocationCoordinates,
+						query.lossLocationCoordinates,
+						query.allowRadius
+					);
+				})
+				.map((doc) => ({ ...doc, user: doc.user[0] }))
+		);
 };
 
 const getPetDocumentById = async (petId) => {

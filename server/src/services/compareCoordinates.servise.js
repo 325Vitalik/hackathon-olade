@@ -2,7 +2,7 @@ const earthRadius = 6371; // Radius of the earth in km
 export const compareCoordinatesService = {
 	isInRadius(coordFirst, coordSecond, radius) {
 		const distance = this.compareCoordinates(coordFirst, coordSecond);
-		return distance <= radius * 2;
+		return distance <= radius;
 	},
 
 	compareCoordinates(coordFirst, coordSecond) {
