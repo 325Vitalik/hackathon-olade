@@ -16,9 +16,11 @@ const getPetDocuments = async (query) => {
 	const petCollection = await petFinderDbService.getPetCollection();
 	const sortCriteria = getSortFromType(query.type);
 
+	const {allowedRadius,lossLocationCoordinates,...filteredQuery}=query
+
 	return await petCollection
 		.aggregate([
-			{ $match: query },
+			{ $match: filteredQuery },
 			{ $sort: { [sortCriteria]: 1 } },
 			{
 				$lookup: {
@@ -33,7 +35,8 @@ const getPetDocuments = async (query) => {
 		.then((documents) =>
 			documents
 				?.filter((doc) => {
-					if (!query.allowRadius || doc.lossLocationCoordinates || query.lossLocationCoordinates) {
+					console.log(query, doc);
+					if (!query.allowRadius || !doc.lossLocationCoordinates || !query.lossLocationCoordinates) {
 						return true;
 					}
 

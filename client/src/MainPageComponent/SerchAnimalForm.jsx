@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react';
+import React, { useReducer } from 'react';
 import styles from './main-page.module.sass'
 import {Button, Form} from 'semantic-ui-react';
 import { navigate, useLocation } from '@reach/router';
@@ -8,6 +8,7 @@ import SelectBreed from '../SumbitForm/SelecBreed';
 import SelectColour from '../SumbitForm/SelecColour';
 import SelectRadius from '../SumbitForm/SelectRadius';
 import SelectAddress from '../SumbitForm/SelectAddress';
+import { loadPetsWithQuery } from './petActions';
 
 const filterActions = {
 	setAnimalType: "FILTER_ANIMAL_TYPE",
@@ -52,6 +53,18 @@ const filterActions = {
 	}
   }
   
+export const clearUndefined=(object)=>{
+	return Object.keys(object).reduce((clearedObj, key)=>{
+		if(Boolean(object[key])){
+			return {
+				...clearedObj,
+				[key]:object[key]
+			}
+		}
+
+		return clearedObj
+	}, {})
+}
 
 export const SearchAnimalForm = () => {
 	const [componentState, componentDispatch]=useReducer(reducer, {}, init)
@@ -132,7 +145,9 @@ export const SearchAnimalForm = () => {
 					<SelectRadius onChange={createChangeAction(filterActions.setAllowedRadius)} />
 				</Form.Field>
 				<Button onClick={()=>{
-					console.log(componentState);
+					const {lossLocation,...queryData}=componentState;
+					console.log(clearUndefined(queryData));
+					dispatch(loadPetsWithQuery(clearUndefined(queryData)));
 				}}>Submit</Button>
 			</Form>
 		</div>
