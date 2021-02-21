@@ -4,7 +4,7 @@ import { uid } from 'uid';
 import { hashService } from './hash.service';
 
 const getSortFromType = (type) => {
-	if (type) {
+	if (type === 'search') {
 		return 'dateLost';
 	}
 
@@ -48,7 +48,7 @@ const insertPetDocument = async (petDocument, userId) => {
 	const imgHash = await hashService.generateHash(petDocument.animalImageLink);
 
 	const _id = uid(28);
-	await petCollection.insertOne({ ...petDocument, userId, _id, imgHash });
+	await petCollection.insertOne({ ...petDocument, userId, _id, imgHash, createdAd: new Date() });
 
 	return _id;
 };
@@ -56,7 +56,7 @@ const insertPetDocument = async (petDocument, userId) => {
 const getPetsWithSameImage = (petId) => {
 	return new Promise(async (resolve, reject) => {
 		const petCollection = await petFinderDbService.getPetCollection();
-		const sortCriteria = getSortFromType(query.type);
+		const sortCriteria = getSortFromType(query.animalType);
 
 		const selectedCollection = await petCollection.findOne({ _id: petId });
 
