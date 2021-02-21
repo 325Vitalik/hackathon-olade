@@ -2,6 +2,7 @@ import { getAuthHeader } from "../Auth/firebaseService";
 import { config } from "../config";
 
 export const SET_PETS = 'SET_PETS';
+export const SET_LOADER = "SET_LOADER";
 
 export const loadPetsWithQuery = (query) => (dispatch, getStore) => {
 	const url = new URL(`${config.hostname}/pet/get`);
@@ -25,3 +26,10 @@ export const loadPetsWithQuery = (query) => (dispatch, getStore) => {
         }
     })
 };
+
+export const setLoaderMainPage=(isLoading)=>(dispatch, getStore) => {
+	dispatch({
+		type:SET_LOADER,
+		value:isLoading
+	})
+}

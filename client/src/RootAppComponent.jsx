@@ -35,7 +35,9 @@ class RootAppComponent extends React.Component {
 		return (
 			<>
 				{this.state.load ? (
-					<Loader type="Puff" color="#2b2b2bd9" height={"100vh"} width={"100vw"} />
+					<div className={'submit-form-loader-wrapper'}>
+						<Loader type="Puff" color="#2b2b2bd9" height={'100vh'} width={100} />
+					</div>
 				) : (
 					<Router>
 						{isLoggedIn ? (
