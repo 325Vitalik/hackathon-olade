@@ -30,7 +30,23 @@ const generateUserDocument = async (user) => {
 	return getUserDocument(user.uid);
 };
 
+const updateUserDocument = async (user) => {
+	if (!user) {
+		throw new InvalidRequestError('User should be an object');
+	}
+	const userCollection = await petFinderDbService.getUserCollection();
+	await userCollection.update({_id : user._id},user, (err, data) => {
+		if (err){ 
+			throw err;
+		};
+
+	});
+
+	return getUserDocument(user.uid);
+};
+
 export const userService = {
 	getUserDocument,
 	generateUserDocument,
+	updateUserDocument
 };

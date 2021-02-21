@@ -19,7 +19,13 @@ const getPetFinderDb = async () => {
 const getUserCollection = async () => {
 	const db = await getPetFinderDb();
 
-	return petFinderDb.collection('users');
+	return db.collection('users');
 };
 
-export const petFinderDbService = { getPetFinderDb, getUserCollection };
+const getPetCollection = async () => {
+	const db = await getPetFinderDb();
+
+	return db.collection('pets')
+}
+
+export const petFinderDbService = { getPetFinderDb, getUserCollection, getPetCollection };

@@ -23,4 +23,15 @@ router.post('/', async (req, res, next) => {
 	}
 });
 
+router.post('/update', async (req, res, next) => {
+	try {
+		const { user } = req.body;
+		await userService.updateUserDocument(user);
+		res.send();
+	} catch (error) {
+	console.log(error)
+		next(error);
+	}
+});
+
 export { router as userRoutes };

@@ -53,7 +53,6 @@ PetPage.defaultProps = {
 };
 
 const mapStateToProps = state => {
-  console.log(state)
   return {
     user: state.auth.currentUser
   }
