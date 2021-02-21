@@ -15,8 +15,9 @@ import { config } from "../config";
 import Header from '../Shared/Header'
 import { getAuthHeader } from "../Auth/firebaseService";
 import { bindActionCreators } from 'redux';
+import { findByImage } from '../MainPageComponent/petActions';
 
-const PetPage = () => {
+const PetPage = ({findByImage}) => {
 
   const [card, setCard] = useState({});
   const [loading, setIsLoading] = useState(true);
@@ -48,7 +49,7 @@ const PetPage = () => {
             <Grid.Column width={7}>
               <Image centered src={card.animalImageLink} size="middle" rounded />
 
-              <Button className={styles.searchButton} onClick={()=>{}} color="primary" fluid size="large">
+              <Button className={styles.searchButton} onClick={()=>findByImage(card._id)} color="primary" fluid size="large">
 								Знайти схожчі за фото
 							</Button>
             </Grid.Column>
@@ -124,7 +125,9 @@ const mapStateToProps = state => {
   }
 };
 
-const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({
+  findByImage
+}, dispatch);
 
 export default connect(
   mapStateToProps,
