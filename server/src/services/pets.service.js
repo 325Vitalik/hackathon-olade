@@ -2,6 +2,7 @@ import { getUidFromRequest } from './firebase.service';
 import { petFinderDbService } from './petFinderDb.service';
 import { uid } from 'uid';
 import { hashService } from './hash.service';
+import { compareCoordinatesService } from './compareCoordinates.servise';
 
 const getSortFromType = (type) => {
 	if (type === 'search') {
@@ -15,10 +16,11 @@ const getPetDocuments = async (query) => {
 	const petCollection = await petFinderDbService.getPetCollection();
 	const sortCriteria = getSortFromType(query.type);
 
+	const {allowedRadius,lossLocationCoordinates,...filteredQuery}=query
+
 	return await petCollection
 		.aggregate([
-			{ $match: query },
-			{ $sort: { [sortCriteria]: 1 } },
+			{ $match: filteredQuery },
 			{
 				$lookup: {
 					from: 'users',
@@ -27,9 +29,26 @@ const getPetDocuments = async (query) => {
 					as: 'user',
 				},
 			},
+			{ $sort: { [sortCriteria]: 1 } },
 		])
 		.toArray()
-		.then((documents) => documents.map((doc) => ({ ...doc, user: doc.user[0] })));
+		.then((documents) =>
+			documents
+				?.filter((doc) => {
+					if (!query.allowedRadius || !doc.lossLocationCoordinates || !query.lossLocationCoordinates) {
+						return true;
+					}
+
+					const res = compareCoordinatesService.isInRadius(
+						doc.lossLocationCoordinates,
+						query.lossLocationCoordinates,
+						query.allowedRadius
+					);
+
+					return res;
+				})
+				.map((doc) => ({ ...doc, user: doc.user[0] }))
+		);
 };
 
 const getPetDocumentById = async (petId) => {

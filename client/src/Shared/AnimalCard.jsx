@@ -4,10 +4,22 @@ import { Card, Icon, Image } from "semantic-ui-react";
 import { navigate } from "@reach/router";
 import "./AnimalCard.sass";
 
+const getAnimalFooter=(animalType, {type})=>{
+	const prefix= type ==='found'?'Знайдений':'Втрачений';
+	const typeMapper={
+		cat:'Котик',
+		dog:'Песик'
+	}
+
+	return `${prefix} ${typeMapper[animalType]}`
+}
+
 export const AnimalCard = ({ cardData }) => {
 	const id = 0;
+	console.log(cardData);
 	return (
 		<Card
+			color={cardData.type==='found'?'green':'red'}
 			className={styles.animalCard}
 			onClick={() => {
 				navigate(`/pet-profile/${cardData._id}`);
@@ -26,7 +38,7 @@ export const AnimalCard = ({ cardData }) => {
 			<Card.Content extra>
 				<a>
 					<Icon name="paw" />
-					{cardData.animalType}
+					{getAnimalFooter(cardData.animalType, cardData)}
 				</a>
 			</Card.Content>
 		</Card>
