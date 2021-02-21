@@ -19,7 +19,8 @@ import { findByImage } from '../MainPageComponent/petActions';
 
 const PetPage = ({findByImage}) => {
 
-  const [card, setCard] = useState({animalImageLink: 'mock-avatar.png'});
+  const [card, setCard] = useState({});
+  const [loading, setIsLoading] = useState(true);
   const { id } = useParams();
   
   useEffect(() => {
@@ -31,13 +32,14 @@ const PetPage = ({findByImage}) => {
         const c = await response.json()
         console.log(c);
         setCard(c);
+        setIsLoading(false)
       } else {
         console.log(response);
       }
     });
   },[]);
 
-  return (
+  return loading? (<></>):(
     <>
       <Header />
       <Container className={styles.mainContainer}>
@@ -91,7 +93,7 @@ const PetPage = ({findByImage}) => {
                 {card.lossDate}
         </div>
               <div className={styles.profileInfoText}>
-                {card.award}
+                {card.award} 	₴
         </div>
               <div className={styles.profileInfoText}>
                 {card.animalDescription}
@@ -100,14 +102,13 @@ const PetPage = ({findByImage}) => {
           </Grid.Row>
           <Grid.Row>
             <div style={{ width: "100%", height: "300px" }}>
-              <Map center={{ lat: 49.8699409, lng: 24.0089085 }} zoom={13} />
+              <Map center={card.lossLocationCoordinates} radius={card.allowedRadius} zoom={13-0.45*(card.allowedRadius/1000)} />
             </div>
           </Grid.Row>
         </Grid>
       </Container>
     </>
-
-  );
+  )
 };
 
 PetPage.propTypes = {
