@@ -9,7 +9,7 @@ export const SearchAnimalForm = () => {
 		<div className={styles.searchFormWrapper}>
 			<Form className={styles.searchForm}>
 				<Form.Field>
-				<Button fluid onClick={()=>navigate('/submit-form')}>Create</Button>
+				<Button fluid onClick={()=>navigate('/submit-form')}>Подати оголошення</Button>
 				</Form.Field>
 				<Form.Group inline>
 					<label>Вид:</label>

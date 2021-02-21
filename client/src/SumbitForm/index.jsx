@@ -95,10 +95,10 @@ const SubmitForm = () => {
     <AppHeader />
     <Container className={'submit-form-container'}>
       <div className={"submit-form-header"}>
-        <h2>Register Pet</h2>
+        <h2>Подати оголошення</h2>
       </div>
       <Form>
-        <Header textAlign={'center'}>Please input info</Header>
+        <Header textAlign={'center'}>Заповніть основну інформацію</Header>
         <div className={"submit-form-pets-main-info-wrapper"}>
           <ImageUploader
             onChangedLink={onChangedLink}
@@ -106,9 +106,9 @@ const SubmitForm = () => {
           />
           <div className={"submit-form-pets-main-info"}>
             <Form.Field>
-              <label>Pets Name</label>
+              <label>Кличка</label>
               <Form.Input
-                placeholder={"Pets Name"}
+                placeholder={"Кличка"}
                 onChange={(e, { value }) => {
                   dispatch({
                     type: submitFormActions.setAnimalName,
@@ -119,9 +119,9 @@ const SubmitForm = () => {
               {/* <Checkbox label={"I don't know name"} /> */}
             </Form.Field>
             <Form.Field>
-              <label>Animal type</label>
+              <label>Вид тварини</label>
               <Dropdown
-                placeholder={"Select animal type"}
+                placeholder={"Оберіть вид тварини"}
                 selection
                 options={animalTypes}
                 onChange={(event, object) => {
@@ -133,7 +133,7 @@ const SubmitForm = () => {
               />
             </Form.Field>
             <Form.Field>
-              <label>Breed</label>
+              <label>Порода</label>
               <SelectBreed
                 animalType={state.animalType}
                 onChange={(event, object) => {
@@ -147,12 +147,14 @@ const SubmitForm = () => {
           </div>
         </div>
       </Form>
-      <Header>Additional info</Header>
+      <div className={'submit-form-additional-info-header'}>
+      <Header textAlign={'center'}>Заповніть додаткову інформацію</Header>
+      </div>
       <Form>
         <div className={"submit-form-additional-info-wrapper"}>
           <Form.Group widths={"equal"}>
             <Form.Field>
-              <label>Colour</label>
+              <label>Колір</label>
               <SelectColour
                 onChange={(e, { value }) => {
                   dispatch({
@@ -163,9 +165,9 @@ const SubmitForm = () => {
               />
             </Form.Field>
             <Form.Field>
-              <label>Award</label>
+              <label>Винагорода</label>
               <Form.Input
-                placeholder={"Award"}
+                placeholder={"Винагорода"}
                 icon={"money bill alternate outline"}
                 iconPosition={"left"}
                 onChange={(e, { value }) => {
@@ -177,11 +179,11 @@ const SubmitForm = () => {
               />
             </Form.Field>
             <Form.Field>
-              <label>Day of loss</label>
+              <label>Дата втрати</label>
               <DateInput
-                name={"Day of loss"}
+                name={"Дата втрати"}
                 closable={true}
-                placeholder={"select day of loss"}
+                placeholder={"Оберіть дату втрати"}
                 value={state.lossDate}
                 onChange={(e, { value }) => {
                   dispatch({
@@ -193,15 +195,15 @@ const SubmitForm = () => {
             </Form.Field>
           </Form.Group>
           <Form.Field>
-            <label>Description</label>
+            <label>Опис</label>
             <TextArea
-              placeholder="Description"
+              placeholder="Будь-ласка, опишіть особливі прикмети тварини"
               onChange={onDescriptionChange}
             />
           </Form.Field>
           <Form.Group widths={"equal"}>
             <Form.Field>
-              <label>Coordinates</label>
+              <label>Приблизні координати</label>
               <GooglePlacesAutocomplete
                 debounce={2000}
                 selectProps={{
@@ -226,7 +228,7 @@ const SubmitForm = () => {
               />
             </Form.Field>
             <Form.Field>
-              <label>Radius</label>
+              <label>Радіус пошуку</label>
               <SelectRadius
                 value={state.allowedRadius}
                 onChange={(e, { value }) => {
@@ -246,7 +248,7 @@ const SubmitForm = () => {
               navigate('/search')
             }}
           >
-            Cancel
+            Повернутись
           </Form.Button>
           <Form.Button
             fluid
@@ -254,7 +256,7 @@ const SubmitForm = () => {
               console.log(state);
             }}
           >
-            Submit
+            Створити
           </Form.Button>
         </Form.Group>
       </Form>
