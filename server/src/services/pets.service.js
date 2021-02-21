@@ -48,9 +48,9 @@ const insertPetDocument = async (petDocument, userId) => {
 	const imgHash = await hashService.generateHash(petDocument.animalImageLink);
 
 	const _id = uid(28);
-	await petCollection.insertOne({ ...petDocument, userId, _id, imgHash, createdAd: new Date() });
+	await petCollection.insertOne({ ...petDocument, userId, _id, imgHash, createdAt: new Date() });
 
-	return _id;
+	return { petId: _id };
 };
 
 const getPetsWithSameImage = (petId) => {
