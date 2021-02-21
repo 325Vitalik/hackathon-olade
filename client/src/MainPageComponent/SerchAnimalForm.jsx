@@ -22,7 +22,7 @@ const filterActions = {
   
   function init() {
 	return {
-	  animalType: "dog",
+	  animalType: "",
 	  animalName: "",
 	  animalBreed: "",
 	  animalColour: "",
