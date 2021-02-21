@@ -14,9 +14,9 @@ router.get('/:petid', async (req, res, next) => {
 	}
 });
 
-router.get('/', async (req, res, next) => {
+router.post('/get', async (req, res, next) => {
 	try {
-		const { query } = req.body;
+		const query = req.body;
 		const petDocuments = await petService.getPetDocuments(query);
 		res.send(petDocuments);
 	} catch (error) {
