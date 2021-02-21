@@ -27,7 +27,7 @@ const filterActions = {
 	  animalColour: "",
 	  lossLocation: null,
 	  lossLocationCoordinates: null,
-	  allowedRadius: null,
+	  allowedRadius: 1000,
 	};
   }
   
