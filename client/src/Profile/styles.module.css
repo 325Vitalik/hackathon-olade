@@ -1,0 +1,37 @@
+.profileInfoRow{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+.profileInfoText{
+    margin-left: 15px;
+    font-size: 20pt;
+}
+.myAnnouncements{
+    margin-left: 15px;
+    font-size: 20pt;
+}
+.buttonContainer{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+.button{
+    margin-left: 15px;
+}
+
+.mainContainer{
+    margin-top: 90px;
+    display: flex !important;
+    justify-content: center;
+    align-items: start;
+}
+
+.editButton{
+    cursor: pointer;
+    color: cadetblue;
+}
+
+.infoInput:disabled{
+    opacity: 1 !important;
+}

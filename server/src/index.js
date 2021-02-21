@@ -15,10 +15,10 @@ const sockets = useSocket(server, { cors: {origin:'*'} } );
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-
 combineRoutes(app);
 
 app.use(errorHandler);
+
 
 sockets.on('connection', socket => {
 	socket.on('button-clicked', () => {

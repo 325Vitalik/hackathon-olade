@@ -15,10 +15,21 @@ router.get('/:uid', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
 	try {
-		const { user, additionalData } = req.body;
-		const userData = await userService.generateUserDocument(user, additionalData);
+		const { user } = req.body;
+		const userData = await userService.generateUserDocument(user);
 		res.send(userData);
 	} catch (error) {
+		next(error);
+	}
+});
+
+router.post('/update', async (req, res, next) => {
+	try {
+		const { user } = req.body;
+		await userService.updateUserDocument(user);
+		res.send();
+	} catch (error) {
+	console.log(error)
 		next(error);
 	}
 });
