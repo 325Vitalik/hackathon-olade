@@ -1,31 +1,45 @@
-import React, { useState, useEffect } from 'react';
-import styles from './shared.module.sass'
-import {
-	Card, Icon,
-	Image,
-} from 'semantic-ui-react';
-import {navigate} from '@reach/router';
+import React, { useState, useEffect } from "react";
+import styles from "./shared.module.sass";
+import { Card, Icon, Image } from "semantic-ui-react";
+import { navigate } from "@reach/router";
+import "./AnimalCard.sass";
 
-export const AnimalCard = props => {
+const getAnimalFooter=(animalType, {type})=>{
+	const prefix= type ==='found'?'Знайдений':'Втрачений';
+	const typeMapper={
+		cat:'Котик',
+		dog:'Песик'
+	}
+
+	return `${prefix} ${typeMapper[animalType]}`
+}
+
+export const AnimalCard = ({ cardData }) => {
 	const id = 0;
 	return (
-		<Card className={styles.animalCard}>
-			<Image src='https://react.semantic-ui.com/images/avatar/large/matthew.png' wrapped ui={false} />
+		<Card
+			color={cardData.type==='found'?'green':'red'}
+			className={styles.animalCard}
+			onClick={() => {
+				navigate(`/pet-profile/${cardData._id}`);
+			}}
+		>
+			<Image src={cardData.animalImageLink} wrapped ui={false} />
 			<Card.Content>
-				<Card.Header onClick={() => navigate(`/pet-profile/${id}`)}>Моя Псина</Card.Header>
+				<Card.Header onClick={() => navigate(`/pet-profile/${cardData._id}`)}>
+					{cardData.animalName || "None"}
+				</Card.Header>
 				<Card.Meta>
-					<span className='date'>додано 15 лютого 2021</span>
+					<span className="date">{cardData.type === "search" ? cardData.lossDate : cardData.createdAt}</span>
 				</Card.Meta>
-				<Card.Description>
-					Не дай боже тобы мати таку псину. НЕ ДАЙ БОЖЕ!!!!!!
-				</Card.Description>
+				<Card.Description>{cardData.animalDescription}</Card.Description>
 			</Card.Content>
 			<Card.Content extra>
 				<a>
-					<Icon name='paw' />
-					Пес
+					<Icon name="paw" />
+					{getAnimalFooter(cardData.animalType, cardData)}
 				</a>
 			</Card.Content>
 		</Card>
-	)
-}
+	);
+};

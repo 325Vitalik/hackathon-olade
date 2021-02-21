@@ -1,51 +1,151 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import Map from '../GoogleMap/Map'
 import {
   useParams
 } from "@reach/router";
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styles from './styles.module.css';
 import {
+  Image,
+  Container,
+  Grid,
   Button,
-  Grid
+  Loader,
 } from 'semantic-ui-react';
+import { config } from "../config";
+import Header from '../Shared/Header'
+import { getAuthHeader } from "../Auth/firebaseService";
 import { bindActionCreators } from 'redux';
+import InfoModal from './InfoModal';
+import { findByImage } from '../MainPageComponent/petActions';
 
+const colourMapper={
+  brown:'Коричневий',
+  white: 'Білий',
+  black: 'Чорний'
+}
 
-const PetPage = ({ user }) => {
-  const [editMode, setEditMode] = useState(true);
-  const [username, setUserName] = useState('');
-  const [status, setStatus] = useState('');
+const breedMapper={
+  abyssinian:'Абісинська',
+  aegean:'Егейська',
+  bobtail:'Бобтейл',
+  other:'Інша',
+  shepherd:'Вівчарка',
+  labrador:'Лабрадор-ретривер',
+  laika: 'Лайка'
+}
 
-  const disableEditMode = () => {
-    setEditMode({ disabled: true });
-  };
+const PetPage = ({findByImage}) => {
 
-  const {id} = useParams();
+  const [card, setCard] = useState({});
+  const [loading, setIsLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const { id } = useParams();
 
-  const update = async () => {
-    if (!username) {
-      return;
-    }
-    try {
-      disableEditMode();
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  useEffect(() => {
+    const url = new URL(`${config.hostname}/pet/${id}`);
+    fetch(url, {
+      headers: {
+        Authorization: getAuthHeader(),
+      },
+    }).then(async (response) => {
+      if (response.ok) {
+        const c = await response.json()
+        console.log(c);
+        setCard(c);
+        setIsLoading(false)
+      } else {
+        console.log(response);
+      }
+    });
+  }, []);
 
-  return (
-    <Grid container textAlign="center" style={{ paddingTop: 30 }}>
-      <Grid.Row>
-  <p>Entered id: {id}</p>
-        <Button>Знайти схожі оголошення</Button>
-      </Grid.Row>
-    </Grid>
-  );
-};
+  return loading ? (<></>) : (
+    <>
+      <Header />
+      <Container className={styles.mainContainer}>
+        <Grid container textAlign="center" style={{ paddingTop: 30 }}>
 
-PetPage.propTypes = {
+          {loading ? (
+            <Loader type="Puff" color="#2b2b2bd9" height={100} width={100} />
+          ) : (
+              <>
+                <Grid.Row>
+                  <Grid.Column width={7}>
+                    <Image centered src={card.animalImageLink} size="middle" rounded />
+                    <Grid.Column>
+                    <Button className={styles.searchButton} onClick={()=>findByImage(card._id)} color="primary" fluid size="large">
+								Знайти схожчі за фото
+							</Button>
+                    </Grid.Column>
+                    <Grid.Column>
+                      <Button className={styles.searchButton} onClick={() => setShowModal(true)} color="green" fluid size="large">
+                        Зконтактувати з заявником
+							</Button>
+                    </Grid.Column>
 
+                  </Grid.Column>
+                  <Grid.Column width={3}>
+                    <div className={styles.profileInfoTextTitle}>
+                      Кличка:
+        </div>
+                    <div className={styles.profileInfoTextTitle}>
+                      Вид тварини:
+        </div>
+                    <div className={styles.profileInfoTextTitle}>
+                      Порода:
+        </div>
+                    <div className={styles.profileInfoTextTitle}>
+                      Колір:
+        </div>
+                    <div className={styles.profileInfoTextTitle}>
+                      Дата втрати:
+        </div>
+                    <div className={styles.profileInfoTextTitle}>
+                      Винагорода:
+        </div>
+                    <div className={styles.profileInfoTextTitle}>
+                      Опис:
+        </div>
+                  </Grid.Column>
+                  <Grid.Column width={6}>
+                    <div className={styles.profileInfoText}>
+                      {card.animalName}
+                    </div>
+                    <div className={styles.profileInfoText}>
+                      {card.animalType === 'dog' ? 'Собака' : 'Кіт'}
+                    </div>
+                    <div className={styles.profileInfoText}>
+                      {breedMapper[card.animalBreed] || card.animalBreed}
+                    </div>
+                    <div className={styles.profileInfoText}>
+                      {colourMapper[card.animalColour] || card.animalColour}
+                    </div>
+                    <div className={styles.profileInfoText}>
+                      {card.lossDate}
+                    </div>
+                    <div className={styles.profileInfoText}>
+                      {card.award} 	₴
+        </div>
+                    <div className={styles.profileInfoText}>
+                      {card.animalDescription}
+                    </div>
+                  </Grid.Column>
+                </Grid.Row>
+                <Grid.Row>
+                  <div style={{ width: "100%", height: "300px" }}>
+                    <Map center={card.lossLocationCoordinates} radius={card.allowedRadius} zoom={13 - 0.45 * (card.allowedRadius / 1000)} />
+                  </div>
+                </Grid.Row>
+              </>
+
+            )}
+
+        </Grid>
+      </Container>
+      {showModal ? <InfoModal userId={card.userId} setClose={() => { setShowModal(false) }}></InfoModal> : <></>}
+    </>
+  )
 };
 
 PetPage.defaultProps = {
@@ -58,7 +158,9 @@ const mapStateToProps = state => {
   }
 };
 
-const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({
+  findByImage
+}, dispatch);
 
 export default connect(
   mapStateToProps,

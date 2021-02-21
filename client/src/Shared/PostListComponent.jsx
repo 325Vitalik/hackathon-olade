@@ -4,11 +4,12 @@ import {AnimalCard} from './AnimalCard';
 
 export const PostList = ({list}) => {
 
+	console.log(list)
 	return (
 		<div className={styles.mainListWrapper}>
 			{
 				list.map((item, i) => (
-					<AnimalCard key={i}/>
+					<AnimalCard cardData={item} key={i}/>
 				))
 			}
 		</div>

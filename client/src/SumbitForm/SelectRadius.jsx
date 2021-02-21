@@ -12,7 +12,7 @@ const getText=(value)=>{
 const radiuses=allowedRadius.map(radius=>({value:radius*METRE_IN_KILOMETER, key:`${radius}`, text:getText(radius)}))
 
 const SelectRadius =({onChange, value})=>{
-    return (<Dropdown onChange={onChange} value={value} search placeholder={'Select animal type'} selection options={radiuses.map(colour=>{
+    return (<Dropdown onChange={onChange} value={value} search placeholder={'Оберіть радіус'} selection options={radiuses.map(colour=>{
         return {...colour, content:(<div className={'submit-form-colour-prompt'}><div className={'submit-form-colour-prompt-block'} style={{background:colour.key}} /><label>{colour.text}</label></div>)}
     })} />)
 }

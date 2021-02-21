@@ -64,3 +64,15 @@
     margin-top: 85px;
     margin-bottom: 15px;
 }
+
+.submit-form-additional-info-header{
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+
+.submit-form-loader-wrapper{
+    display: flex;
+    align-self: center;
+    justify-content: center;
+    height: 100wh;
+}

@@ -6,7 +6,7 @@ const colours=[
 ]
 
 const SelectColour =({onChange})=>{
-    return (<Dropdown onChange={onChange} placeholder={'Select animal type'} selection options={colours.map(colour=>{
+    return (<Dropdown onChange={onChange} placeholder={'Оберіть колір'} selection options={colours.map(colour=>{
         return {...colour, content:(<div className={'submit-form-colour-prompt'}><div className={'submit-form-colour-prompt-block'} style={{background:colour.key}} /><label>{colour.text}</label></div>)}
     })} />)
 }

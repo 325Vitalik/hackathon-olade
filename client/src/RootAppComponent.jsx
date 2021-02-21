@@ -8,32 +8,55 @@ import { navigate, Router, useLocation } from "@reach/router";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import MainPage from "./MainPage/MainPage";
-import { HomePage } from "./MainPageComponent/HomePage";
+import HomePage from "./MainPageComponent/HomePage";
 import SubmitForm from "./SumbitForm";
+import { auth, getCurrentUser } from "./Auth/firebaseService";
+import Loader from "react-loader-spinner";
+import PureHomePage from "./PureHomePage/PureHomePage";
 
 class RootAppComponent extends React.Component {
+	constructor() {
+		super();
+		this.state = {
+			load: true,
+		};
+	}
 	componentDidMount = () => {
-		this.props.initialInsertCurrentUser();
+		auth.onAuthStateChanged((user) => {
+			this.setState({
+				load: false,
+			});
+			this.props.initialInsertCurrentUser();
+		});
 	};
 
 	render() {
-		const isLoggedIn = Boolean(this.props.currentUser);
+		const isLoggedIn = getCurrentUser();
 
 		return (
-			<Router>
-				{isLoggedIn ? (
-					<>
-						<Profile path="profile" />
-						<PetPage path="pet-profile/:id" />
-						<HomePage path="/search" />
-						<HomePage path="/found" />
-						<SubmitForm path="/submit-form" />
-					</>
-				) : null}
-				<SignIn path="sign-in" />
-				<SignUp path="sign-up" />
-				<MainPage default path="/" />
-			</Router>
+			<>
+				{this.state.load ? (
+					<div className={'submit-form-loader-wrapper'}>
+						<Loader type="Puff" color="#2b2b2bd9" height={'100vh'} width={100} />
+					</div>
+				) : (
+					<Router>
+						{isLoggedIn ? (
+							<>
+								<Profile path="/profile" />
+								<PetPage path="/pet-profile/:id" />
+								<HomePage path="/search" type="search" />
+								<HomePage path="/found" type="found" />
+								<SubmitForm path="/submit-form" searchType={this.props.searchType} />
+								<PureHomePage path="/photo-result" />
+							</>
+						) : null}
+						<SignIn path="sign-in" />
+						<SignUp path="sign-up" />
+						<MainPage default path="/" />
+					</Router>
+				)}
+			</>
 		);
 	}
 }
@@ -45,6 +68,7 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state) {
 	return {
 		currentUser: state.auth.currentUser,
+		searchType: state.main.searchType,
 	};
 }
 
