@@ -31,7 +31,3 @@
     cursor: pointer;
     color: cadetblue;
 }
-
-.infoInput:disabled{
-    opacity: 1 !important;
-}
