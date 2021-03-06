@@ -10,5 +10,5 @@ blocks:
       jobs:
         - name: 'Job #1'
           commands:
-            - bash scripts/build.sh
             - ls
+            - bash scripts/build.sh
