@@ -10,4 +10,4 @@ blocks:
       jobs:
         - name: 'Job #1'
           commands:
-            - ./scripts/build.sh
+            - bash scripts/build.sh
