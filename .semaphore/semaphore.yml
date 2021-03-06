@@ -10,5 +10,6 @@ blocks:
       jobs:
         - name: 'Job #1'
           commands:
+            - checkout
             - ls
             - bash scripts/build.sh
