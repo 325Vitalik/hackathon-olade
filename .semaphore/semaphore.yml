@@ -5,11 +5,14 @@ agent:
     type: e1-standard-2
     os_image: ubuntu1804
 blocks:
-  - name: 'Block #1'
+  - name: Build and push images
     task:
       jobs:
-        - name: 'Job #1'
+        - name: Build images
           commands:
             - checkout
             - ls
             - bash scripts/build.sh
+        - name: Push images
+          commands:
+            - checkout
